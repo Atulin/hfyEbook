@@ -20,7 +20,7 @@ Run 'npm install' to install the dependencies, and you should be good to go.
 
 ## ## Usage
 
-`node ebook.js 'spec.json'`
+`bun ebook.mts 'spec.json'`
 
 Feel free to enjoy the resulting output files for personal consumption and to share any
 book specifications or filters you author with other users of this tool, but:

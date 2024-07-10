@@ -12,8 +12,7 @@
 	"filename": "Blessed are the Simple",
 	"output": ["epub", "latex", "html"],
 	"no-preamble-treshold": 1000,
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "How I Summoned a Human",
 			"src": "http://www.reddit.com/r/HFY/comments/2v6eyw/oc_blessed_are_the_simple_or_how_i_summoned_a/"

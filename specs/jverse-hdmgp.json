@@ -11,8 +11,7 @@
 	],
 	"filename": "Humans don’t make good pets",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Chapter 1",
 			"src": "http://www.reddit.com/r/HFY/comments/2flz4o/oc_humans_dont_make_good_pets_i/"
@@ -161,9 +160,9 @@
 			"title": "Chapter 31.5: Interlude",
 			"src": "http://www.reddit.com/r/HFY/comments/4f8m7w/humans_dont_make_good_pets_xxxiv_interlude/"
 		},
-        {
-            "title": "Chapter 32",
-            "src": "http://www.reddit.com/r/HFY/comments/4tv7le/humans_dont_make_good_pets_xxxii/"
-        }
+		{
+			"title": "Chapter 32",
+			"src": "http://www.reddit.com/r/HFY/comments/4tv7le/humans_dont_make_good_pets_xxxii/"
+		}
 	]
 }

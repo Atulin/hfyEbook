@@ -7,14 +7,13 @@
 		"clean-reddit",
 		"custom-break-to-hr",
 		"no-preamble",
-        "jverse-salvage",
+		"jverse-salvage",
 		"typography",
 		"finalize"
 	],
 	"filename": "Salvage",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Salvage",
 			"src": "http://www.reddit.com/r/HFY/comments/2j0ra4/ocjenkinsverse_salvage/"
@@ -364,36 +363,36 @@
 			"src": "http://www.reddit.com/r/HFY/comments/3mnts8/ocjenkinsverse_salvage_chapter_85_fields_of_fire/"
 		},
 		{
-		    "title": "The Flame",
-		    "src": "http://www.reddit.com/r/HFY/comments/3sjco5/ocjenkinsverse_salvage_chapter_86_the_flame/"
+			"title": "The Flame",
+			"src": "http://www.reddit.com/r/HFY/comments/3sjco5/ocjenkinsverse_salvage_chapter_86_the_flame/"
 		},
 		{
-		    "title": "Hell of a Kick",
-		    "src": "http://www.reddit.com/r/HFY/comments/3yidvv/ocjenkinsverse_salvage_chapter_87_hell_of_a_kick/"
+			"title": "Hell of a Kick",
+			"src": "http://www.reddit.com/r/HFY/comments/3yidvv/ocjenkinsverse_salvage_chapter_87_hell_of_a_kick/"
 		},
 		{
-		    "title": "The Fittest",
-		    "src": "http://www.reddit.com/r/HFY/comments/48ag5j/jenkinsversesalvage_chapter_88_the_fittest/"
+			"title": "The Fittest",
+			"src": "http://www.reddit.com/r/HFY/comments/48ag5j/jenkinsversesalvage_chapter_88_the_fittest/"
 		},
 		{
-		    "title": "The Edge of Time",
-		    "src": "http://www.reddit.com/r/HFY/comments/51pja7/jenkinsverse_salvage_chapter_89_the_edge_of_time/"
+			"title": "The Edge of Time",
+			"src": "http://www.reddit.com/r/HFY/comments/51pja7/jenkinsverse_salvage_chapter_89_the_edge_of_time/"
 		},
 		{
-		    "title": "The Rabbit Hole",
-		    "src": "http://www.reddit.com/r/HFY/comments/5nuqot/jenkinsverse_salvage_chapter_90_the_rabbit_hole/"
+			"title": "The Rabbit Hole",
+			"src": "http://www.reddit.com/r/HFY/comments/5nuqot/jenkinsverse_salvage_chapter_90_the_rabbit_hole/"
 		},
 		{
-		    "title": "Solve for X-plosion",
-		    "src": "http://www.reddit.com/r/HFY/comments/6dz6e9/jenkinsverse_salvage_chapter_91_solve_for_xplosion/"
+			"title": "Solve for X-plosion",
+			"src": "http://www.reddit.com/r/HFY/comments/6dz6e9/jenkinsverse_salvage_chapter_91_solve_for_xplosion/"
 		},
 		{
-		    "title": "Going Without",
-		    "src": "http://www.reddit.com/r/HFY/comments/6g6vcg/jverse_salvage_chapter_92_going_without/"
+			"title": "Going Without",
+			"src": "http://www.reddit.com/r/HFY/comments/6g6vcg/jverse_salvage_chapter_92_going_without/"
 		},
 		{
-		    "title": "Lost Futures",
-		    "src": "http://www.reddit.com/r/HFY/comments/6wpqax/ocjenkinsverse_salvage_chapter_93_lost_futures/"
+			"title": "Lost Futures",
+			"src": "http://www.reddit.com/r/HFY/comments/6wpqax/ocjenkinsverse_salvage_chapter_93_lost_futures/"
 		}
 	]
 }

@@ -3,15 +3,14 @@
 	"creator": "captainmeta4",
 	"filters": [
 		"from-reddit-post",
-		"clean-reddit", 
+		"clean-reddit",
 		"jverse-do",
 		"typography",
 		"finalize"
 	],
 	"filename": "Deathworld Origins",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Chapter I",
 			"src": "http://www.reddit.com/r/HFY/comments/6n8o20/jverse_deathworld_origins_chapter_i/"

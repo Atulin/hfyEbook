@@ -3,7 +3,7 @@
 	"creator": "hume_reddit",
 	"filters": [
 		"from-reddit-post",
-		"clean-reddit", 
+		"clean-reddit",
 		"no-preamble",
 		"jverse-txcs",
 		"typography",
@@ -11,8 +11,7 @@
 	],
 	"filename": "The Xiù Chang Saga",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Monkeys Reaches Stars",
 			"src": "http://www.reddit.com/r/HFY/comments/2hf1f9/ocjenkinsverse_monkeys_reaches_stars/"

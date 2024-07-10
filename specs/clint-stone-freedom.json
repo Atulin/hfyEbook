@@ -11,8 +11,7 @@
 	],
 	"filename": "Chronicles of Clint Stone 1 - Freedom",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Freedom",
 			"src": "http://www.reddit.com/r/HFY/comments/25c0k6/oc_clint_stone_freedom/"

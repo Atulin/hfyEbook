@@ -10,8 +10,7 @@
 	],
 	"filename": "Chronicles of Clint Stone 3 - Warpath",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Spies",
 			"src": "https://www.reddit.com/r/HFY/comments/4w1bqi/clint_stone_spies/d64gcub"

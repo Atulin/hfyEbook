@@ -11,8 +11,7 @@
 	],
 	"filename": "Builders In The Void 2 - War",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "The Hammer Falls",
 			"src": "http://www.reddit.com/r/HFY/comments/209yp1/bitv_the_hammer_falls/"

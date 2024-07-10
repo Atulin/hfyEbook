@@ -1,23 +1,25 @@
 {
-	"name": "ebook.js",
-	"version": "0.0.1",
-	"description": "Creates EPUB ebooks from filtered Markdown sources.",
-	"homepage": "https://www.reddit.com/r/hfy",
-	"author": "https://www.reddit.com/u/b3iAAoLZOH9Y265cujFhhLoXl",
-	"license": "MIT",
-	"main": "ebook.js",
-	"dependencies": {
-		"cheerio": "^0.19.0",
-		"marked": "^0.3.3",
-		"node-uuid": "^1.4.3",
-		"node-zip": "^1.1.1",
-		"request": "^2.74.0"
-	},
-	"scripts": {
-		"check": "bunx @biomejs/biome check --write ."
-	},
-	"devDependencies": { "@biomejs/biome": "^1.8.3" },
-	"readme": "README.txt",
-	"private": true,
-	"repository": ""
+  "name": "ebook.js",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Creates EPUB ebooks from filtered Markdown sources.",
+  "homepage": "https://www.reddit.com/r/hfy",
+  "author": "https://www.reddit.com/u/b3iAAoLZOH9Y265cujFhhLoXl",
+  "license": "MIT",
+  "main": "ebook.mts",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "cheerio": "^0.22.0",
+    "marked": "^13.0.2",
+    "node-uuid": "^1.4.8",
+    "node-zip": "^1.1.1",
+    "request": "^2.88.2"
+  },
+  "scripts": {
+    "check": "bunx @biomejs/biome check --write"
+  },
+  "devDependencies": { "@biomejs/biome": "^1.8.3", "@types/bun": "^1.1.6", "@types/cheerio": "^0.22.35", "@types/node": "^20.14.10", "@types/request": "^2.48.12" },
+  "readme": "README.txt",
+  "private": true,
+  "repository": ""
 }

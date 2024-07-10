@@ -1,16 +1,10 @@
 {
 	"title": "The Salvation War\nPantheocide",
 	"creator": "Stuart Slade",
-	"filters": [
-		"from-url",
-		"salvation-war",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-url", "salvation-war", "typography", "finalize"],
 	"filename": "The Salvation War - Pantheocide",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.tboverse.us/HPCAFORUM/phpBB3/viewtopic.php?f=29&t=2371&sid=2cb2d0337e5c5876cc34389b2990278c",

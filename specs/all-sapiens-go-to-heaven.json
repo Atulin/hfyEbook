@@ -10,8 +10,7 @@
 	],
 	"filename": "All Sapiens Go To Heaven",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.reddit.com/r/HFY/comments/3ir9p3/all_sapiens_go_to_heaven_part_1/"

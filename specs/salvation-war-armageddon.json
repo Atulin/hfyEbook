@@ -1,16 +1,10 @@
 {
 	"title": "The Salvation War\nArmageddon",
 	"creator": "Stuart Slade",
-	"filters": [
-		"from-url",
-		"salvation-war",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-url", "salvation-war", "typography", "finalize"],
 	"filename": "The Salvation War - Armageddon",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.tboverse.us/HPCAFORUM/phpBB3/viewtopic.php?f=29&t=8334&sid=5ab2fbf5dcddbd2b115cc6c9c9317e74",

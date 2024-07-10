@@ -24,8 +24,7 @@
 	},
 	"filename": "The Deathworlders",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "The Kevin Jenkins Experience 1",
 			"filters": "reddit",

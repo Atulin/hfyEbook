@@ -10,8 +10,7 @@
 	],
 	"filename": "Guttersnipe",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.reddit.com/r/HFY/comments/2mifpf/ocjenkinsverseguttersnipe_part_1/"

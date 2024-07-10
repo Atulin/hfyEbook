@@ -11,8 +11,7 @@
 	],
 	"filename": "Builders In The Void 1 - Peace",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Humanity: Builders in the Void",
 			"src": "http://www.reddit.com/r/HFY/comments/200c5g/humanity_builders_in_the_void/"

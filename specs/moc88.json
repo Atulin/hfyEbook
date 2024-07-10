@@ -11,8 +11,7 @@
 	],
 	"filename": "Memories of Creature 88",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "The memories of creature 88",
 			"src": "http://www.reddit.com/r/HFY/comments/2oin4d/oc_the_memories_of_creature_88/"

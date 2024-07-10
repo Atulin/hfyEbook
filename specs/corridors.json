@@ -5,14 +5,13 @@
 	"filters": [
 		"from-reddit-post",
 		"clean-reddit",
-		"corridors", 
+		"corridors",
 		"typography",
 		"finalize"
 	],
 	"filename": "Corridors",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Chapter 1: Pilot",
 			"src": "http://www.reddit.com/r/HFY/comments/2n4vge/oc_corridors_part_1/"

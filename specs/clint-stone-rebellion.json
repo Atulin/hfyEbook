@@ -11,8 +11,7 @@
 	],
 	"filename": "Chronicles of Clint Stone 2 - Rebellion",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Rebellion of Skuar",
 			"src": "http://www.reddit.com/r/HFY/comments/27j5m0/oc_clint_stone_rebellion_of_skuar/"

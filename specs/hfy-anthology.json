@@ -10,8 +10,7 @@
 	],
 	"filename": "HFY Anthology",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "The Energy Trade",
 			"byline": "Lost_Carcosan",
@@ -362,25 +361,25 @@
 			"byline": "Teulisch",
 			"src": "http://www.reddit.com/r/HFY/comments/3zltpe/tales_from_space_tech_support_legend_of_the/"
 		},
-        {
-            "title": "Secondary System Online",
-            "byline": "Ryantific_theory",
-            "src": "http://www.reddit.com/r/HFY/comments/4ka7lc/secondary_system_online/"
-        },
-        {
-            "title": "Six Letters from Earth that will Make You Even More Afraid",
-            "byline": "dspeyer",
-            "src": "http://www.reddit.com/r/HFY/comments/4kcmhs/six_letters_from_earth_that_will_make_you_even/"
-        },
-        {
-            "title": "Extractinol",
-            "byline": "Visser946",
-            "src": "http://www.reddit.com/r/HFY/comments/4wy0rz/extractinol/"
-        },
-        {
-            "title": "The Human Experience",
-            "byline": "JackFragg",
-            "src": "http://www.reddit.com/r/HFY/comments/54tx62/the_human_experience/"
-        }
+		{
+			"title": "Secondary System Online",
+			"byline": "Ryantific_theory",
+			"src": "http://www.reddit.com/r/HFY/comments/4ka7lc/secondary_system_online/"
+		},
+		{
+			"title": "Six Letters from Earth that will Make You Even More Afraid",
+			"byline": "dspeyer",
+			"src": "http://www.reddit.com/r/HFY/comments/4kcmhs/six_letters_from_earth_that_will_make_you_even/"
+		},
+		{
+			"title": "Extractinol",
+			"byline": "Visser946",
+			"src": "http://www.reddit.com/r/HFY/comments/4wy0rz/extractinol/"
+		},
+		{
+			"title": "The Human Experience",
+			"byline": "JackFragg",
+			"src": "http://www.reddit.com/r/HFY/comments/54tx62/the_human_experience/"
+		}
 	]
 }

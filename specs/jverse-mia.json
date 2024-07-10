@@ -10,8 +10,7 @@
 	],
 	"filename": "MIA",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "1. Awakening",
 			"src": "http://www.reddit.com/r/HFY/comments/36bgna/oc_jenkinsverse_mia_chapter_1_awakening/"

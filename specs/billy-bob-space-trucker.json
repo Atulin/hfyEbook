@@ -12,8 +12,7 @@
 	],
 	"filename": "Billy-Bob Space Trucker",
 	"output": ["epub", "html", "latex"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Un",
 			"src": "http://www.reddit.com/r/HFY/comments/2gmgmt/oc_billybob_space_trucker/"

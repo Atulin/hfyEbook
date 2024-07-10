@@ -12,8 +12,7 @@
 	],
 	"filename": "The Fourth Wave",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.reddit.com/r/HFY/comments/30tk8j/pithe_fourth_wave_part_i/"

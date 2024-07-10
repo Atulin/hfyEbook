@@ -10,8 +10,7 @@
 	],
 	"filename": "Chrysalis",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Chapter 1",
 			"src": "http://www.reddit.com/r/HFY/comments/55v9e1/chrysalis/"

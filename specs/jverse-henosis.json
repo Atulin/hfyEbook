@@ -3,7 +3,7 @@
 	"creator": "hume_reddit",
 	"filters": [
 		"from-reddit-post",
-		"clean-reddit", 
+		"clean-reddit",
 		"no-preamble",
 		"jverse-henosis",
 		"typography",
@@ -11,8 +11,7 @@
 	],
 	"filename": "Henosis",
 	"output": ["epub", "latex", "html"],
-	"contents":
-	[
+	"contents": [
 		{
 			"title": "Part 1",
 			"src": "http://www.reddit.com/r/HFY/comments/404ozd/ocjverse_henosis_14/"
