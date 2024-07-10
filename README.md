@@ -1,7 +1,10 @@
-About
------
+# HFYEbook
 
-Ebook.JS is a flexible E-book processing pipeline. It can automatically compile 
+## About
+
+Hard fork of <https://github.com/stonewalljones/hfyEbook>
+
+Ebook.JS is a flexible E-book processing pipeline. It can automatically compile
 local or online material in HTML or MarkDown to any or all of:
 
     * EPUB, which is convenient for people consuming the material using small form-factor
@@ -11,17 +14,13 @@ local or online material in HTML or MarkDown to any or all of:
     
     * LaTeX for creation of high-quality PDF output with LuaLaTex or XeLaTeX.
 
-
-Installation
-------------
+## Installation
 
 Run 'npm install' to install the dependencies, and you should be good to go.
 
+## ## Usage
 
-Usage
------
-node ebook.js 'spec.json'
-
+`node ebook.js 'spec.json'`
 
 Feel free to enjoy the resulting output files for personal consumption and to share any
 book specifications or filters you author with other users of this tool, but:
@@ -29,29 +28,16 @@ book specifications or filters you author with other users of this tool, but:
 PLEASE DO NOT DISTRIBUTE THE RESULTING OUTPUT FILES UNLESS YOU ARE THE AUTHOR OR OWNER
 OF THE RIGHTS TO ALL MATERIAL THEY CONTAIN, I.E. DON'T BE A... BAD PERSON.
 
-
-Licence:
---------
+## Licence
 
 MIT
 
-
-Bugs and Suggestions
---------------------
-
-Send a PM with the details to https://www.reddit.com/user/b3iAAoLZOH9Y265cujFh/
-
-I'm only around infrequently. If you do not receive an immediate response, it's not because
-you're being ignored. I'll be getting back to you as soon as I see your message.
-
-
-Configuration
--------------
+## Configuration
 
 All input files are expected to be encoded as UTF-8. Similarly, intermediary and output
 data is also encoded as UTF-8.
 
-This script will generate one or more ebooks when given a simple JSON specification 
+This script will generate one or more ebooks when given a simple JSON specification
 file (henceforth referred to as 'specs' for brewity). They have the following format:
 
 "title" (string):
@@ -77,109 +63,109 @@ file (henceforth referred to as 'specs' for brewity). They have the following fo
         'cache' directory. Clear the 'cache' directory to redownload the source material.
         
         Local files are not cached.
-    
-		* "from-local-html"
-		    Read the chapter data from a local (X)HTML file, given a filename relative
-		    to the root directory.
 
-		* "from-local-markdown"
-		    Read the chapter data from a local Markdown file, given a filename relative
-		    to the root directory.
+* "from-local-html"
+      Read the chapter data from a local (X)HTML file, given a filename relative
+      to the root directory.
 
-		* "from-hfy-archive"
-		    Downloads and caches the chapter contents from a HFY Archive post given
-		    a source URL.
-	
-		* "from-reddit-post"
-		    Downloads and caches the chapter contents from a Reddit post given a source
-		    URL. Since Reddits JSON API is used - so that post tagged NSFW can be
-		    automatically retrieved - URL-shorteners (like http://redd.it) are not
-		    supported. To use such resources, first resolve the actual Reddit link
-		    by visiting the URL in a browser.
+* "from-local-markdown"
+      Read the chapter data from a local Markdown file, given a filename relative
+      to the root directory.
 
-		    Submission continuations in comments are automatically detected and
-		    concatenated with the main submission text before further processing.
-		
-		* "from-url"
-			Downloads and caches the full response from an arbitrary URL. It is the
-			responsibility of the user to insert additional filters in the processing
-			chain that extracts the content, and presents it as a DOM that is useable
-			with subsequent filters, if desired.
+* "from-hfy-archive"
+      Downloads and caches the chapter contents from a HFY Archive post given
+      a source URL.
 
-	FILTERS:
-	
-		* "clean-reddit"
-		    Removes HTML comment elements, CSS classes on any other element and
-		    replaces any HTTP/HTTPS link to reddit with its text. Links to other
-		    domains are retained.
+* "from-reddit-post"
+      Downloads and caches the chapter contents from a Reddit post given a source
+      URL. Since Reddits JSON API is used - so that post tagged NSFW can be
+      automatically retrieved - URL-shorteners (like <http://redd.it>) are not
+      supported. To use such resources, first resolve the actual Reddit link
+      by visiting the URL in a browser.
 
-		* "custom-break-to-hr"
-		    Different series use a variety of ways to indicate breaks / segments or pauses
-		    in the text. This filter harmonizes all known instances of this into <hr />
-		    elements, which can then be further processed by the typography
-		    filter (see below)
+      Submission continuations in comments are automatically detected and
+      concatenated with the main submission text before further processing.
+  
+* "from-url"
+   Downloads and caches the full response from an arbitrary URL. It is the
+   responsibility of the user to insert additional filters in the processing
+   chain that extracts the content, and presents it as a DOM that is useable
+   with subsequent filters, if desired.
 
-		* "finalize"
-			Removal of DOM elements by other filters tends to leave surrounding text
-			blocks containing newlines. This can lead to undesirable formatting in
-			output formats where whitespace is not completely ignored (latex). This filter
-			removes such blocks if and only if they're redundant (i.e. more than one
-			such block occurs in a row). It also removes any completely empty paragraphs.
-			
-		* "no-preamble"
-		    Removes any post content preceding the first horizontal rule, if the total
-		    length of the content does not exceed 2500 characters. The threshold value
-		    has been determined empirically and works for most of the content in the
-		    test corpus.
-		    The default maximum preable length can be changed with the parameter
-		    "no-preamble-threshold", which can be specified for either the spec, one or
-		    more chapters, or both. If both are specified, the chapter parameter takes
-		    precedence (used by BatS).
+ FILTERS:
 
-		* "print-dom"
-			Makes no changes, but displays a visual representation of the DOM at the
-			point in the filtering chain in which it's inserted. Very handy for
-			tracking down when and why undesirable DOM transformations are performed.
-			
-		* "typography"
-		    Replaces opening and closing quotes and apostrophes with right / left versions,
-		    replaces '...' with proper ellipsis, removes redundant, leading or trailing
-		    horizontal rules and replaces the ones remaining with asterisms. Note that
-		    unicode characters are used rather than HTML entities, since practically
-		    all EPUB readers have problems rendering these correctly. Conversely,
-		    not using entites can be correctly handled by all modern browsers.
+* "clean-reddit"
+      Removes HTML comment elements, CSS classes on any other element and
+      replaces any HTTP/HTTPS link to reddit with its text. Links to other
+      domains are retained.
 
-		* Series-specific filters for the following:
+* "custom-break-to-hr"
+      Different series use a variety of ways to indicate breaks / segments or pauses
+      in the text. This filter harmonizes all known instances of this into `<hr />`
+      elements, which can then be further processed by the typography
+      filter (see below)
 
-		    * All Sapiens Go To Heaven
-		    * Billy-Bob Space Trucker
-		    * Blessed Are The Simple
-		    * Builders In The Void: Peace / War
-		    * Chrysalis
-		    * Client Stone: Freedom / Rebellion
-		    * Corridors
-		    * Deathworld Origins
-		    * Good Training
-		    * Guttersnipe
-		    * Henosis
-		    * HFY Anthology
-		    * Humans Don't Make Good Pets
-		    * Memories of Creature 88
-		    * MIA
-		    * Pact
-		    * QED
-		    * Salvage
-		    * The Deathworlders
-		    * The Fourth Wave
-		    * The Lost Minstrel
-		    * The Salvation War: Amageddon / Pantheocide
-		    * The Xiu Chang Saga
-		    * Worm
+* "finalize"
+   Removal of DOM elements by other filters tends to leave surrounding text
+   blocks containing newlines. This can lead to undesirable formatting in
+   output formats where whitespace is not completely ignored (latex). This filter
+   removes such blocks if and only if they're redundant (i.e. more than one
+   such block occurs in a row). It also removes any completely empty paragraphs.
+
+* "no-preamble"
+      Removes any post content preceding the first horizontal rule, if the total
+      length of the content does not exceed 2500 characters. The threshold value
+      has been determined empirically and works for most of the content in the
+      test corpus.
+      The default maximum preable length can be changed with the parameter
+      "no-preamble-threshold", which can be specified for either the spec, one or
+      more chapters, or both. If both are specified, the chapter parameter takes
+      precedence (used by BatS).
+
+* "print-dom"
+   Makes no changes, but displays a visual representation of the DOM at the
+   point in the filtering chain in which it's inserted. Very handy for
+   tracking down when and why undesirable DOM transformations are performed.
+
+* "typography"
+      Replaces opening and closing quotes and apostrophes with right / left versions,
+      replaces '...' with proper ellipsis, removes redundant, leading or trailing
+      horizontal rules and replaces the ones remaining with asterisms. Note that
+      unicode characters are used rather than HTML entities, since practically
+      all EPUB readers have problems rendering these correctly. Conversely,
+      not using entites can be correctly handled by all modern browsers.
+
+* Series-specific filters for the following:
+
+  * All Sapiens Go To Heaven
+  * Billy-Bob Space Trucker
+  * Blessed Are The Simple
+  * Builders In The Void: Peace / War
+  * Chrysalis
+  * Client Stone: Freedom / Rebellion
+  * Corridors
+  * Deathworld Origins
+  * Good Training
+  * Guttersnipe
+  * Henosis
+  * HFY Anthology
+  * Humans Don't Make Good Pets
+  * Memories of Creature 88
+  * MIA
+  * Pact
+  * QED
+  * Salvage
+  * The Deathworlders
+  * The Fourth Wave
+  * The Lost Minstrel
+  * The Salvation War: Amageddon / Pantheocide
+  * The Xiu Chang Saga
+  * Worm
 
 "filename" (string):
-	Specifies the base name for emitted output files. Omits extension, since that
-	is appended by each output plugin (see below) as appropriate.
-	
+ Specifies the base name for emitted output files. Omits extension, since that
+ is appended by each output plugin (see below) as appropriate.
+
 "output" (string or array of strings):
     Used to specify one or more integrations filters that build output files based
     on the filtered chapter contents. If only a single type of output is desired,
@@ -216,26 +202,24 @@ file (henceforth referred to as 'specs' for brewity). They have the following fo
             The source location of the material for the given chapter. This can
             be any value appropriate to the chosen input filter (see above).
 
-		* "filter" (string, optional):
-			If a set of filter chains have been specified, this reference to a chain
-			by name is mandatory. This feature can be used to support multi-source
-			or variably filtered content.
-	
-	NOTE: It is possible to add aditional user-defined parameters to each chapter,
-	      which can be used to influence the operation of filters in the relevant
-	      processing chain. This has many potential uses, notably to sub-select
-	      chapter content in situations where content for multiple chapters
-	      originates from the same source URL. For an example of this, see the
-	      spec and content filter implementation for The Salvation War.
+* "filter" (string, optional):
+   If a set of filter chains have been specified, this reference to a chain
+   by name is mandatory. This feature can be used to support multi-source
+   or variably filtered content.
+
+ NOTE: It is possible to add aditional user-defined parameters to each chapter,
+       which can be used to influence the operation of filters in the relevant
+       processing chain. This has many potential uses, notably to sub-select
+       chapter content in situations where content for multiple chapters
+       originates from the same source URL. For an example of this, see the
+       spec and content filter implementation for The Salvation War.
 
 When a specification contains multiple chapters that use the same source URL, the execution
 of all but the first chapter using a given source will block automatically until processing
 of the first instance completes. This prevents redundant fetching of that URL when the content
 has not yet been cached. Chapters using different source URLs still process in parallel.
 
-
-Authoring Filters
------------------
+## Authoring Filters
 
 Each filter is implemented as a Node.JS module, and placed in the "filters"
 directory. Each filter module must export exactly one function:
@@ -303,10 +287,8 @@ its name should begin with 'from-', and it has two additional responsibilities:
         // ensuring that it contains only alphanumerics, dashes and underscores.
         chap.id = sanitize(chap.src);
     }
- 
-    
-DOM structure
--------------
+
+## DOM structure
 
 Almost all intermediary filters and all output filters expects a constrained DOM layout. It is
 the responsibility of any input filter (or a specialised intermediary filter) to harmonise any
@@ -315,11 +297,11 @@ input data to conform to the following convention:
 The DOM operated on by filters is a HTML fragment, not a full document. It should consist of
 nothing but a series of paragraphs, possibly interdispersed by one or more horizontal rules.
 
-Text in each paragraph can be bolded by using nested <strong> tags and italisized by using
-<em>. Fixed width blocks can be included by using either <pre> or <code>. Ordered and unordered
-lists are supported via <ol> and <ul> respectively, linebreaks can be introduced with <br> but
-are strongly discouraged. Empty lines are NOT supported. Struck out text can use either <s>,
-<del> or <strike> and text can be centered with the <center> tag,
+Text in each paragraph can be bolded by using nested `<strong>` tags and italisized by using
+`<em>`. Fixed width blocks can be included by using either `<pre>` or `<code>`. Ordered and unordered
+lists are supported via `<ol>` and `<ul>` respectively, linebreaks can be introduced with `<br>` but
+are strongly discouraged. Empty lines are NOT supported. Struck out text can use either `<s>`,
+`<del>` or `<strike>` and text can be centered with the `<center>` tag,
 
 The only tag permitted outside an enclosing root-level paragraph are horizontal rules which
 will be converted to a section break appropriate for each type of output file. Paragraphs should
@@ -330,26 +312,26 @@ should be converted to the closest supported tag or discarded.
 
 To wit:
 
-<DOM>
-    <p>The first paragraph of the text.</p>
-    <p>This paragraph will be followed by additional spacing and an asterism:</p>
-    <hr/>
-    <p>
-        <pre>
-            DISCLAIMER: This is not a exhaustive example.
-        </pre>
-        You're free to use <strong>bold</strong> or <em>italic</em> text. On the
-        other hand, you <strike>can</strike> cannot use:
-        <ul>
-            <li>Headings</li>
-            <li>Font tags or any other styling markup or attributes</li>
-            <li>HTML entities and character references. Both should be converted to their
-                utf-8 encoded equivalents.
-            </li>
-        </ul>
-        While this may seem restrictive, it has proved sufficient to faithfully represent
-        the current test corpus, while keeping all filters interoperable and the implementational
-        complexity relatively low. It also helps to ensure that the same material is visually
-        close to identical across all supported output formats.
-    </p>
-</DOM>
+    <DOM>
+        <p>The first paragraph of the text.</p>
+        <p>This paragraph will be followed by additional spacing and an asterism:</p>
+        <hr/>
+        <p>
+            <pre>
+                DISCLAIMER: This is not a exhaustive example.
+            </pre>
+            You're free to use <strong>bold</strong> or <em>italic</em> text. On the
+            other hand, you <strike>can</strike> cannot use:
+            <ul>
+                <li>Headings</li>
+                <li>Font tags or any other styling markup or attributes</li>
+                <li>HTML entities and character references. Both should be converted to their
+                    utf-8 encoded equivalents.
+                </li>
+            </ul>
+            While this may seem restrictive, it has proved sufficient to faithfully represent
+            the current test corpus, while keeping all filters interoperable and the implementational
+            complexity relatively low. It also helps to ensure that the same material is visually
+            close to identical across all supported output formats.
+        </p>
+    </DOM>
