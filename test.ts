@@ -3,6 +3,8 @@ import { $, Glob } from "bun";
 import chalk from "chalk";
 
 const logDir = "logs";
+const wait = 5;
+
 await $`rm -r ${logDir}`;
 
 const files = new Glob("./specs/*.json").scan();
@@ -13,7 +15,7 @@ const stat = { failed: 0, passed: 0 };
 for await (const file of files) {
 	const spec = file.split(sep).at(-1);
 
-	console.log(`🧪Testing spec ${chalk.bold(spec)}`);
+	console.log(`🧪Testing spec ${chalk.blue(spec)}`);
 	const start = Bun.nanoseconds();
 
 	if (!spec) {
@@ -37,6 +39,9 @@ for await (const file of files) {
 		const log = `CODE ${exitCode}\n\n=== STDOUT ===\n\n${stdout}\n\n=== STDERR ===\n\n${stderr}`;
 		await Bun.write(join(logDir, `${spec.slice(0, spec.length - 5)}.log`), log);
 	}
+
+	console.log(`⏳ Waiting ${wait}s to appease the rate limit...`);
+	await Bun.sleep(wait * 1000);
 }
 
 console.log(`${chalk.green("Passed:")} ${stat.passed}`);

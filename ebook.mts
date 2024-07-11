@@ -77,6 +77,8 @@ function UriCache() {
 	for (let i = 0; i < files.length; i++) cache.push(files[i]);
 }
 
+UriCache.prototype.cache = [];
+
 const filters: { [key: string]: { apply: () => void } } = {};
 
 function FilterManager() {
@@ -84,7 +86,7 @@ function FilterManager() {
 
 	for (let i = 0; i < files.length; i++) {
 		const fname = files[i];
-		const fid = fname.slice(0, fname.length - 4);
+		const fid = fname.slice(0, fname.length - 3);
 
 		filters[fid] = require(`./filters/${fname}`);
 	}
@@ -138,7 +140,7 @@ function Sequence(ops: ((params: Params, next: () => void) => void)[], params: P
 
 	for (let i = ops.length - 1; i >= 0; i--)
 		last = ((cur, nxt) => () => {
-			cur(params, nxt);
+			cur && cur(params, nxt);
 		})(ops[i], last);
 
 	last();
@@ -186,7 +188,7 @@ for (let i = 0; i < spec.contents.length; i++) {
 	if (spec.filters instanceof Array) {
 		for (let fi = 0; fi < spec.filters.length; fi++)
 			ops.push(filter_mgr.get(spec.filters[fi]));
-	} else if (spec.filters instanceof Map) {
+	} else if (filter_type === "[object Object]") {
 		if (typeof chap.filters !== "string") {
 			console.log(
 				`${ERROR_TAG}In "${chap.title}": When a collection of filters is specified, each chapter must also specify witch filter chain to use.`,
@@ -194,14 +196,16 @@ for (let i = 0; i < spec.contents.length; i++) {
 			process.exit(1);
 		}
 
-		if (!(chap.filters in spec.filters)) {
+		const f = spec.filters as { [key: string]: string[] };
+
+		if (!(chap.filters in f)) {
 			console.log(
 				`${ERROR_TAG}In "${chap.title}"; Cannot resolve the filter chain "${chap.filters}".`,
 			);
 			process.exit(1);
 		}
 
-		const filters = spec.filters.get(chap.filters) ?? [];
+		const filters = f[chap.filters] ?? [];
 
 		for (let fi = 0; fi < filters.length; fi++)
 			ops.push(filter_mgr.get(filters[fi]));

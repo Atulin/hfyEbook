@@ -1,16 +1,20 @@
 import Root = cheerio.Root;
 
-export type Filters = string[] | Map<string, string[]> | string;
+export type Filters = string[] | { [key: string]: string[] } | string;
 
 export interface Contents {
+	byline: string | undefined;
 	title: string;
 	src: string;
 	id: string;
 	dom: Root;
 	filters: Filters;
+	"no-preamble-treshold": number | undefined;
+	"sw-part-index": number | undefined;
 }
 
 export interface Spec {
+	patreon: string | undefined;
 	title: string;
 	creator: string;
 	filters: Filters;
@@ -18,4 +22,5 @@ export interface Spec {
 	output: string[];
 	contents: Contents[];
 	loaded: number;
+	"no-preamble-treshold": number | undefined;
 }
