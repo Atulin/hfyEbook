@@ -12,8 +12,9 @@ export function apply(params: Params, next: () => void) {
 		const p = $(e).parent();
 		const t = p.text();
 
-		if (t.indexOf("Continued ") === 0 || t.indexOf("Concluded ") === 0)
+		if (t.indexOf("Continued ") === 0 || t.indexOf("Concluded ") === 0) {
 			rem.push(p);
+		}
 	});
 
 	// Remove date posted and reading time estimation
@@ -31,7 +32,9 @@ export function apply(params: Params, next: () => void) {
 	$("p").each((_, e) => {
 		const p = $(e);
 
-		if (p.text().trim() === "") rem.push(p);
+		if (p.text().trim() === "") {
+			rem.push(p);
+		}
 	});
 
 	const end_m = /^\+*end (chapter|part) \d/i;
@@ -46,13 +49,18 @@ export function apply(params: Params, next: () => void) {
 			console.log(`R: ${t}`);
 			rem.concat(p.nextAll());
 			rem.push(p);
-		} else if (t.search(end_m) === 0) rem.push(p);
-		else if (t.search(cont_m) === 0) rem.push(p);
+		} else if (t.search(end_m) === 0) {
+			rem.push(p);
+		} else if (t.search(cont_m) === 0) {
+			rem.push(p);
+		}
 
 		if (title === "Deliverance") {
-			if (t === "Four years previously.")
+			if (t === "Four years previously.") {
 				p.parent().html("<strong>Four years previously.</strong>");
-			else if (t === "__" || t === "End chapter 5") rem.push(p);
+			} else if (t === "__" || t === "End chapter 5") {
+				rem.push(p);
+			}
 		}
 	});
 
@@ -70,9 +78,7 @@ export function apply(params: Params, next: () => void) {
 		);
 	} else if (title === "Firebird (pt. 1)") {
 		$(
-			$(
-				'p:contains("I don’t know about you, but this looks like imprisonment")',
-			)[0],
+			$('p:contains("I don’t know about you, but this looks like imprisonment")')[0],
 		).replaceWith(
 			'<p>♪♫<em>"I don’t know about you, but this looks like imprisonment/ what’s worse is that the prisoners don’t know that they’re prisoners/ even defend the…"</em>♫♪</p>',
 		);
@@ -103,15 +109,15 @@ export function apply(params: Params, next: () => void) {
 	} else if (title === "Dragon Dreams (pt. 4)") {
 		const ps = $("p");
 
-		for (let i = ps.length - 6; i < ps.length; i++) rem.push($(ps[i]));
-	} else if (
-		["Operation NOVA HOUND", "Back Down To Earth", "Metadyskolia"].includes(
-			title,
-		)
-	) {
+		for (let i = ps.length - 6; i < ps.length; i++) {
+			rem.push($(ps[i]));
+		}
+	} else if (["Operation NOVA HOUND", "Back Down To Earth", "Metadyskolia"].includes(title)) {
 		const ps = $("p");
 
-		for (let i = ps.length - 2; i < ps.length; i++) rem.push($(ps[i]));
+		for (let i = ps.length - 2; i < ps.length; i++) {
+			rem.push($(ps[i]));
+		}
 	} else if (title.indexOf("Warhorse") > -1) {
 		const ps = $("p");
 		const ws_re = /[ \t\r\n]+/g;
@@ -122,7 +128,9 @@ export function apply(params: Params, next: () => void) {
 			for (let i = 0; i < cont.length; i++) {
 				const c = cont[i];
 
-				if (c.type === "text") c.data = c.data?.replace(ws_re, " ");
+				if (c.type === "text") {
+					c.data = c.data?.replace(ws_re, " ");
+				}
 			}
 		});
 
@@ -130,7 +138,9 @@ export function apply(params: Params, next: () => void) {
 	} else if (title === "Event Horizons") {
 		const ps = $($('p:contains("patreon.com")')[0]).prev().nextAll();
 
-		for (let i = 0; i < ps.length; i++) rem.push($(ps[i]));
+		for (let i = 0; i < ps.length; i++) {
+			rem.push($(ps[i]));
+		}
 	}
 
 	if (
@@ -150,7 +160,9 @@ export function apply(params: Params, next: () => void) {
 			.prev()
 			.nextAll();
 
-		for (let i = 0; i < ps.length; i++) rem.push($(ps[i]));
+		for (let i = 0; i < ps.length; i++) {
+			rem.push($(ps[i]));
+		}
 	}
 
 	params.purge(rem);

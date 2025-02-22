@@ -1,13 +1,7 @@
 {
 	"title": "HFY Anthology",
 	"creator": "Various Authors",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"hfy-anthology",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "hfy-anthology", "typography", "finalize"],
 	"filename": "HFY Anthology",
 	"output": ["epub", "latex", "html"],
 	"contents": [

@@ -1,13 +1,7 @@
 {
 	"title": "Chronicles of Clint Stone\nPart 3: Warpath",
 	"creator": "someguynamedted",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"no-preamble",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "no-preamble", "typography", "finalize"],
 	"filename": "Chronicles of Clint Stone 3 - Warpath",
 	"output": ["epub", "latex", "html"],
 	"contents": [

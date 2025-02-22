@@ -7,8 +7,11 @@ function removeComments($: Root, el: Cheerio) {
 	$(el)
 		.contents()
 		.each((i, e) => {
-			if (e.type === "comment") $(e).remove();
-			else removeComments($, e);
+			if (e.type === "comment") {
+				$(e).remove();
+			} else {
+				removeComments($, e);
+			}
 		});
 }
 
@@ -23,7 +26,9 @@ function fixMonoEntities($: Root) {
 			const c = cont[i];
 
 			if (c.type === "text") {
-				while (pt.exec(c.data)) c.data = c.data.replace(pt, "&$1");
+				while (pt.exec(c.data)) {
+					c.data = c.data.replace(pt, "&$1");
+				}
 			}
 		}
 	};

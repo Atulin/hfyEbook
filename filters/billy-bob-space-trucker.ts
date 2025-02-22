@@ -16,26 +16,21 @@ export function apply(params: Params, next: () => void) {
 		for (let i = 0; i < cont.length; i++) {
 			const c = cont[i];
 
-			if (c.type === "text" && c?.data && c.data.search(c_re) > -1)
+			if (c.type === "text" && c?.data && c.data.search(c_re) > -1) {
 				c.data = c.data.replace(c_re, "");
+			}
 		}
 	});
 
 	// Harmonize catchphrase formatting.
-	if (["Un", "Deux"].includes(chap.title))
-		$("pre").replaceWith(
-			$("<p><strong>Billy-Bob Space Trucker</strong></p>\n"),
-		);
-	else if (chap.title === "Trois")
+	if (["Un", "Deux"].includes(chap.title)) {
+		$("pre").replaceWith($("<p><strong>Billy-Bob Space Trucker</strong></p>\n"));
+	} else if (chap.title === "Trois") {
 		$.root().find("p strong").text("Billy-Bob Space Trucker");
-	else if (chap.title === "Dix-Sept")
+	} else if (chap.title === "Dix-Sept") {
 		utils.removeSingle($, rem, 'p:contains("Edit I hates they spelling yarr")');
-	else if (chap.title === "Dix-Huit") {
-		utils.removeSingle(
-			$,
-			rem,
-			'p:contains("Edit fix: Got overzealous with copy paste")',
-		);
+	} else if (chap.title === "Dix-Huit") {
+		utils.removeSingle($, rem, 'p:contains("Edit fix: Got overzealous with copy paste")');
 		utils.removeSingle($, rem, 'p:contains("Edit. Thought and FLT")');
 	} else if (chap.title === "Falling from on high") {
 		const fp = $("p").first();

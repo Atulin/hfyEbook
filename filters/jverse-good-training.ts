@@ -12,11 +12,7 @@ export function apply(params: Params, next: () => void) {
 	if (chap.title === "The Locals") {
 		utils.removeFirst($, rem, "p", 2);
 		utils.removeSingle($, rem, 'p:contains("CONTINUED IN COMMENTS BELOW")');
-		utils.removeSingle(
-			$,
-			rem,
-			'p:contains("I felt like adding more. Have an epilogue!")',
-		);
+		utils.removeSingle($, rem, 'p:contains("I felt like adding more. Have an epilogue!")');
 		utils.removeAll($, rem, "h1");
 	}
 
@@ -27,7 +23,9 @@ export function apply(params: Params, next: () => void) {
 		"Good Training: April Fool's": [2, 0],
 	});
 
-	if (rem.length) params.purge(rem);
+	if (rem.length) {
+		params.purge(rem);
+	}
 
 	next();
 }

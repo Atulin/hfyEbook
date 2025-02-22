@@ -31,8 +31,9 @@ export function apply(params: Params, next: () => void) {
 
 	console.log(`Building ${oname}`);
 
-	if (spec.patreon)
+	if (spec.patreon) {
 		html += `    <p class="center"><center><div class="patreon">Donate securely to the author at <a href="${spec.patreon}">patreon.com</a></div></center></p>\n`;
+	}
 
 	html += vspace;
 	html += '    <h1 class="toc-item">Table of contents</h1><br />\n';
@@ -50,7 +51,9 @@ export function apply(params: Params, next: () => void) {
 
 		html += `    <h1 id="${chap.id}">${chap.title}</h1>\n`;
 
-		if (chap.byline) html += `    <p class="byline">By ${chap.byline}</p>\n`;
+		if (chap.byline) {
+			html += `    <p class="byline">By ${chap.byline}</p>\n`;
+		}
 
 		html += '    <div class="chapter">\n';
 		html += `${chap.dom.xml().replace(/^/g, "      ").replace(/\n/g, "\n      ")}\n`;

@@ -6,7 +6,9 @@ function filterText($: Root, e: Element) {
 	if (e.type === "tag") {
 		const c = $(e).contents();
 
-		for (let i = 0; i < c.length; i++) filterText($, c[i]);
+		for (let i = 0; i < c.length; i++) {
+			filterText($, c[i]);
+		}
 	} else if (e.type === "text") {
 		// This is less odd than it looks: The second space
 		// is some weird unicode character. Here, we're replacing
@@ -49,11 +51,15 @@ export function apply(params: Params, next: () => void) {
 
 		const c = el.children();
 
-		if (c.length < 1) return;
+		if (c.length < 1) {
+			return;
+		}
 
 		const lc = c[c.length - 1];
 
-		if (lc.type === "tag" && lc.name === "br") $(lc).remove();
+		if (lc.type === "tag" && lc.name === "br") {
+			$(lc).remove();
+		}
 	});
 
 	$("i").each((i, e) => {
@@ -67,16 +73,22 @@ export function apply(params: Params, next: () => void) {
 	$("em").each((i, e) => {
 		const c = $(e).children();
 
-		if (c.length < 1) return;
+		if (c.length < 1) {
+			return;
+		}
 
 		const lc = c[c.length - 1];
 
-		if (lc.type === "tag" && lc.name === "br") $(lc).remove();
+		if (lc.type === "tag" && lc.name === "br") {
+			$(lc).remove();
+		}
 	});
 
 	const c = $.root().children();
 
-	for (let i = 0; i < c.length; i++) filterText($, c[i]);
+	for (let i = 0; i < c.length; i++) {
+		filterText($, c[i]);
+	}
 
 	next();
 }

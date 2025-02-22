@@ -5,9 +5,7 @@ import request from "request";
 import type { Params } from "../types/params.js";
 
 function uriToId(uri: string) {
-	return decodeURI(
-		uri.replace(/http:\/\/|www\.|[\?=&#%]/g, "").replace(/[\.\/]/g, "_"),
-	);
+	return decodeURI(uri.replace(/http:\/\/|www\.|[\?=&#%]/g, "").replace(/[\.\/]/g, "_"));
 }
 
 function get(params: Params, callback: () => void) {

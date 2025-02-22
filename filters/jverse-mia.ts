@@ -5,20 +5,21 @@ import Cheerio = cheerio.Cheerio;
 export function apply(params: Params, next: () => void) {
 	const chap = params.chap;
 	const $ = chap.dom;
-	const chap_nb = Number.parseInt(
-		chap.title.substr(0, chap.title.indexOf(".")),
-		10,
-	);
+	const chap_nb = Number.parseInt(chap.title.substr(0, chap.title.indexOf(".")), 10);
 	const rem: Cheerio[] = [];
 
 	if (chap_nb === 1) {
 		// Remove double spacing
 		$("p").each((i, e) => {
-			if (e.name !== "p") return;
+			if (e.name !== "p") {
+				return;
+			}
 
 			const el = $(e);
 
-			if (el.text().trim() === "&amp;nbsp;") rem.push(el);
+			if (el.text().trim() === "&amp;nbsp;") {
+				rem.push(el);
+			}
 		});
 	}
 
@@ -55,19 +56,24 @@ export function apply(params: Params, next: () => void) {
 		"28. The Door": [6, 0],
 	});
 
-	if (chap_nb > 7 || chap_nb === 1 || chap_nb === 4)
+	if (chap_nb > 7 || chap_nb === 1 || chap_nb === 4) {
 		utils.removeFirst($, rem, "hr", 1);
+	}
 
 	$("p strong").each((i, e) => {
 		const el = $(e);
 
-		if (el.text().indexOf("Chapter ") === 0) rem.push(el.parent());
+		if (el.text().indexOf("Chapter ") === 0) {
+			rem.push(el.parent());
+		}
 	});
 
 	$("p span").each((i, e) => {
 		const el = $(e);
 
-		if (el.text().toLowerCase().indexOf("part ") === 0) rem.push(el);
+		if (el.text().toLowerCase().indexOf("part ") === 0) {
+			rem.push(el);
+		}
 	});
 
 	params.purge(rem);

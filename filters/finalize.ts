@@ -12,7 +12,9 @@ export function apply(params: Params, next: () => void) {
 			const cr = p.contents()[0];
 
 			if (cr.type === "text") {
-				if (params.decode_crs(cr.data).trim() === "") p.remove();
+				if (params.decode_crs(cr.data).trim() === "") {
+					p.remove();
+				}
 			}
 		}
 	});
@@ -27,10 +29,14 @@ export function apply(params: Params, next: () => void) {
 		const r = roots[i];
 
 		if (r.type === "text" && r.data.search(newl) > -1) {
-			if (rem) $(r).remove();
+			if (rem) {
+				$(r).remove();
+			}
 
 			rem = true;
-		} else rem = false;
+		} else {
+			rem = false;
+		}
 	}
 
 	// That may leave a single trailing newline
@@ -38,7 +44,9 @@ export function apply(params: Params, next: () => void) {
 
 	const last = roots[roots.length - 1];
 
-	if (last.type === "text" && last.data.search(newl) > -1) $(last).remove();
+	if (last.type === "text" && last.data.search(newl) > -1) {
+		$(last).remove();
+	}
 
 	next();
 }

@@ -9,10 +9,7 @@ export function apply(params: Params, next: () => void) {
 	const md = fs.readFileSync(chap.src, { encoding: "utf8" });
 
 	console.log(`${chalk.green("Loading")} ${chap.src}`);
-	chap.dom = cheerio.load(
-		marked(md, { async: false }) as string,
-		params.cheerio_flags,
-	);
+	chap.dom = cheerio.load(marked(md, { async: false }) as string, params.cheerio_flags);
 	chap.id = chap.src.replace(/[\/,\.]/, "").replace(/[\/,\.]/g, "-");
 	next();
 }

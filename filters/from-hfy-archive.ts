@@ -82,18 +82,18 @@ function handleResponse(params, body, callback) {
 	for (let i = 0; i < content.length; i++) {
 		const e = content[i];
 
-		if (e.type === "text" && e.data === "\n\n") e.data = "\n";
+		if (e.type === "text" && e.data === "\n\n") {
+			e.data = "\n";
+		}
 	}
 
 	params.chap.dom = $;
 	console.log("Lengte van schrijfding:");
 	console.log($.html().length);
 
-	fs.writeFileSync(
-		`${import.meta.dir}/../cache/${params.chap.id}`,
-		params.chap.dom.xml(),
-		{ encoding: "utf8" },
-	);
+	fs.writeFileSync(`${import.meta.dir}/../cache/${params.chap.id}`, params.chap.dom.xml(), {
+		encoding: "utf8",
+	});
 
 	callback();
 }

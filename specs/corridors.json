@@ -2,13 +2,7 @@
 	"title": "Corridors",
 	"creator": "Nanoprober",
 	"patreon": "https://www.patreon.com/user?u=3737690",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"corridors",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "corridors", "typography", "finalize"],
 	"filename": "Corridors",
 	"output": ["epub", "latex", "html"],
 	"contents": [

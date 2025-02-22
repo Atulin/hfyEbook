@@ -14,7 +14,9 @@ export function apply(params: Params, next: () => void) {
 	$("h2").each((i, e) => {
 		const nxt = $(e).next();
 
-		if (nxt.length && nxt[0] === "hr") rem.push($(nxt));
+		if (nxt.length && nxt[0] === "hr") {
+			rem.push($(nxt));
+		}
 
 		e.name = "strong";
 
@@ -24,11 +26,15 @@ export function apply(params: Params, next: () => void) {
 
 		const f = el.contents()[0];
 
-		if (f.type === "text") f.data = f.data?.replace(wsre, "");
+		if (f.type === "text") {
+			f.data = f.data?.replace(wsre, "");
+		}
 
 		const txt = el.text();
 
-		if (["Previous Chapter", "Next Chapter"].includes(txt)) rem.push(el);
+		if (["Previous Chapter", "Next Chapter"].includes(txt)) {
+			rem.push(el);
+		}
 	});
 
 	$("p").each((i, e) => {
@@ -38,10 +44,7 @@ export function apply(params: Params, next: () => void) {
 			const c = cont[idx];
 
 			if (c.type === "text") {
-				c.data = c.data
-					?.replace(wsre, "")
-					.replace(qtre, "”")
-					.replace(spre, "“");
+				c.data = c.data?.replace(wsre, "").replace(qtre, "”").replace(spre, "“");
 			}
 		}
 	});
@@ -58,10 +61,11 @@ export function apply(params: Params, next: () => void) {
 		"Part 9": [4, 0],
 	});
 
-	if (chap.title === "Part 4")
+	if (chap.title === "Part 4") {
 		$('*:contains("Davi was scrambling through the vent")')[0].name = "p";
-	else if (chap.title === "Part 7")
+	} else if (chap.title === "Part 7") {
 		$('*:contains("Bobi, for his part, agreed.")')[0].name = "p";
+	}
 
 	$("strong").each((i, e) => {
 		const el = $(e);
@@ -79,7 +83,9 @@ export function apply(params: Params, next: () => void) {
 	$("*")
 		.contents()
 		.each((i, e) => {
-			if (e.type !== "text") return;
+			if (e.type !== "text") {
+				return;
+			}
 
 			e.data = e.data?.replace(/&#xA0;/gi, "");
 		});

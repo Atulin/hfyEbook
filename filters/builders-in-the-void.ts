@@ -39,7 +39,9 @@ export function apply(params: Params, next: () => void) {
 		"The Generals life": [0, 1],
 	});
 
-	if (chap.title === "An Old Tale") utils.removeAll($, rem, "h2");
+	if (chap.title === "An Old Tale") {
+		utils.removeAll($, rem, "h2");
+	}
 
 	params.purge(rem);
 	next();

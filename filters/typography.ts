@@ -24,7 +24,9 @@ export function apply(params: Params, next: () => void) {
 		$(e1)
 			.contents()
 			.each((i2, e2) => {
-				if (e2.type !== "text" || !e2.data) return;
+				if (e2.type !== "text" || !e2.data) {
+					return;
+				}
 
 				let is = e2.data;
 				let os = "";
@@ -68,15 +70,22 @@ export function apply(params: Params, next: () => void) {
 						} else {
 							os += ENT_SQUOR;
 
-							if (i === is.length - 1 || is[i + 1] === " ")
+							if (i === is.length - 1 || is[i + 1] === " ") {
 								// Check for contractions
 								last_open_s = false;
+							}
 						}
 					} else if (c === "&") {
-						if (!is.substr(i, 20).match(/^&.*;/)) os += ENT_AMPER;
-						else os += "&";
-					} else if (c === "-") os += ENT_NDASH;
-					else os += c;
+						if (!is.substr(i, 20).match(/^&.*;/)) {
+							os += ENT_AMPER;
+						} else {
+							os += "&";
+						}
+					} else if (c === "-") {
+						os += ENT_NDASH;
+					} else {
+						os += c;
+					}
 
 					last_char = c;
 				}
@@ -110,9 +119,14 @@ export function apply(params: Params, next: () => void) {
 		.children()
 		.each((_, e) => {
 			if (e.name === "hr") {
-				if (brem) $(e).remove();
-				else brem = true;
-			} else if (e.name === "p") brem = false;
+				if (brem) {
+					$(e).remove();
+				} else {
+					brem = true;
+				}
+			} else if (e.name === "p") {
+				brem = false;
+			}
 		});
 
 	const rem: Cheerio[] = [];
@@ -122,8 +136,11 @@ export function apply(params: Params, next: () => void) {
 		const el = $(e);
 
 		// Don't insert break as the first or last element
-		if (el.prevAll().length < 1 || el.nextAll().length < 1) rem.push(el);
-		else el.replaceWith(`<p class="center">${ENT_ASTER}</p>`);
+		if (el.prevAll().length < 1 || el.nextAll().length < 1) {
+			rem.push(el);
+		} else {
+			el.replaceWith(`<p class="center">${ENT_ASTER}</p>`);
+		}
 	});
 
 	params.purge(rem);

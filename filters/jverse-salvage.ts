@@ -10,7 +10,9 @@ function processText($: Root, fn: (c: Element) => void) {
 		for (let i = 0; i < cont.length; i++) {
 			const c = cont[i];
 
-			if (c.type === "text") fn(c);
+			if (c.type === "text") {
+				fn(c);
+			}
 		}
 	});
 }
@@ -21,17 +23,15 @@ export function apply(params: Params, next: () => void) {
 
 	if (chap.title === "Dark Heart") {
 		processText($, (c: Element) => {
-			if (c.data?.charCodeAt(0) === 0x2003)
+			if (c.data?.charCodeAt(0) === 0x2003) {
 				c.data = c.data?.slice(2, c.data?.length);
+			}
 		});
-	} else if (
-		["Positions of Power", "Prisoners", "Center of attention"].includes(
-			chap.title,
-		)
-	) {
+	} else if (["Positions of Power", "Prisoners", "Center of attention"].includes(chap.title)) {
 		processText($, (c) => {
-			if (c.data && c.data?.indexOf("*") > -1)
+			if (c.data && c.data?.indexOf("*") > -1) {
 				c.data = c.data?.replace(/\*/, "");
+			}
 		});
 	}
 
@@ -46,7 +46,9 @@ export function apply(params: Params, next: () => void) {
 	].includes(chap.title);
 
 	if (prune_chapter) {
-		for (let i = 0; i < 2; i++) rem.push($(ps[i]));
+		for (let i = 0; i < 2; i++) {
+			rem.push($(ps[i]));
+		}
 	}
 
 	const fp = $(ps[ps.length - 1]);
@@ -55,8 +57,9 @@ export function apply(params: Params, next: () => void) {
 		fp.text() === "END OF CHAPTER" ||
 		fp.text() === "End of Chapter" ||
 		fp.text() === "Chapter End"
-	)
+	) {
 		rem.push(fp);
+	}
 
 	params.purge(rem);
 	next();

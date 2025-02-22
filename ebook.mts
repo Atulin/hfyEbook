@@ -1,7 +1,7 @@
 import fs from "node:fs";
+import { join } from "node:path";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import { join } from "node:path";
 import type { Params } from "./types/params.js";
 import type { Contents, Spec } from "./types/spec.js";
 import Cheerio = cheerio.Cheerio;
@@ -17,7 +17,9 @@ if (process.argv.length < 3) {
 function ensure_dir(dir: string) {
 	const full_path = `${import.meta.dir}/${dir}`;
 
-	if (!fs.existsSync(full_path)) fs.mkdirSync(full_path);
+	if (!fs.existsSync(full_path)) {
+		fs.mkdirSync(full_path);
+	}
 }
 
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
@@ -29,9 +31,7 @@ function decode_cr(cr: string) {
 
 	const start = isHex ? 3 : 2;
 	const end = cr.length - 2;
-	return String.fromCodePoint(
-		Number.parseInt(cr.slice(start, end + start), isHex ? 16 : 10),
-	);
+	return String.fromCodePoint(Number.parseInt(cr.slice(start, end + start), isHex ? 16 : 10));
 }
 
 // Decode all HTML character references to unicode.
@@ -62,7 +62,9 @@ function purge(set: Cheerio[]) {
 	for (let i = 0; i < set.length; i++) {
 		const e = set[i];
 
-		if (DEBUG) console.log(`${chalk.red("Delete")}: [${e.text()}]`);
+		if (DEBUG) {
+			console.log(`${chalk.red("Delete")}: [${e.text()}]`);
+		}
 
 		e.remove();
 	}
@@ -73,7 +75,9 @@ const cache = [];
 function UriCache() {
 	const files = fs.readdirSync(`${import.meta.dir}/cache`);
 
-	for (let i = 0; i < files.length; i++) cache.push(files[i]);
+	for (let i = 0; i < files.length; i++) {
+		cache.push(files[i]);
+	}
 }
 
 UriCache.prototype.cache = [];
@@ -110,19 +114,21 @@ function Finalize(params: Params) {
 	if (++spec.loaded === spec.contents.length) {
 		// params.chap = null;
 
-		if (spec.output.constructor === String)
+		if (spec.output.constructor === String) {
 			filter_mgr.get(spec.output)(params, () => {});
-		else if (Array.isArray(spec.output)) {
+		} else if (Array.isArray(spec.output)) {
 			const ops: (() => void)[] = [];
 
-			for (let i = 0; i < spec.output.length; i++)
+			for (let i = 0; i < spec.output.length; i++) {
 				ops.push(filter_mgr.get(spec.output[i]));
+			}
 
 			Sequence(ops, params);
-		} else
+		} else {
 			console.log(
 				`${ERROR_TAG}Unable to interpret the output filter reference. It must be either a string or array of strings.`,
 			);
+		}
 	}
 }
 
@@ -133,26 +139,28 @@ function Sequence(
 	params: Params,
 	cb: SequenceCb = null,
 ) {
-	if (ops.length < 2)
+	if (ops.length < 2) {
 		throw `${ERROR_TAG}Cannot create a sequence of less than two operations.`;
+	}
 
 	let last = ((params, cb) => () => {
 		Finalize(params);
-		if (cb) cb(null);
+		if (cb) {
+			cb(null);
+		}
 	})(params, cb);
 
-	for (let i = ops.length - 1; i >= 0; i--)
+	for (let i = ops.length - 1; i >= 0; i--) {
 		last = ((cur, nxt) => () => {
 			cur?.(params, nxt);
 		})(ops[i], last);
+	}
 
 	last();
 }
 
 // Load the spec. Start processing.
-const spec: Spec = await Bun.file(
-	join(import.meta.dir, process.argv[2]),
-).json();
+const spec: Spec = await Bun.file(join(import.meta.dir, process.argv[2])).json();
 const sched: { [key: string]: [(() => void)[], Params][] } = {};
 const uri_cache = new UriCache();
 
@@ -171,16 +179,12 @@ for (let i = 0; i < spec.contents.length; i++) {
 	};
 
 	if (typeof chap.title !== "string") {
-		console.log(
-			`${ERROR_TAG}Each chapter must contain a "title" property (string).`,
-		);
+		console.log(`${ERROR_TAG}Each chapter must contain a "title" property (string).`);
 		process.exit(1);
 	}
 
 	if (typeof chap.src !== "string") {
-		console.log(
-			`${ERROR_TAG}Each chapter must contain a "src" property (string).`,
-		);
+		console.log(`${ERROR_TAG}Each chapter must contain a "src" property (string).`);
 		process.exit(1);
 	}
 
@@ -191,8 +195,9 @@ for (let i = 0; i < spec.contents.length; i++) {
 	const filter_type = Object.prototype.toString.call(spec.filters);
 
 	if (Array.isArray(spec.filters)) {
-		for (let fi = 0; fi < spec.filters.length; fi++)
+		for (let fi = 0; fi < spec.filters.length; fi++) {
 			ops.push(filter_mgr.get(spec.filters[fi]));
+		}
 	} else if (filter_type === "[object Object]") {
 		if (typeof chap.filters !== "string") {
 			console.log(
@@ -212,30 +217,38 @@ for (let i = 0; i < spec.contents.length; i++) {
 
 		const filters = f[chap.filters] ?? [];
 
-		for (let fi = 0; fi < filters.length; fi++)
+		for (let fi = 0; fi < filters.length; fi++) {
 			ops.push(filter_mgr.get(filters[fi]));
+		}
 	} else {
 		console.log(`${ERROR_TAG}Unsupported filter chain type "${filter_type}".`);
 		process.exit(1);
 	}
 
-	if (chap.src in sched) sched[chap.src].push([ops, params]);
-	else sched[chap.src] = [[ops, params]];
+	if (chap.src in sched) {
+		sched[chap.src].push([ops, params]);
+	} else {
+		sched[chap.src] = [[ops, params]];
+	}
 }
 
 for (const src in sched) {
-	if (!sched.hasOwnProperty(src)) continue;
+	if (!sched.hasOwnProperty(src)) {
+		continue;
+	}
 
 	const chapters = sched[src];
 
-	if (chapters.length === 1) Sequence(chapters[0][0], chapters[0][1]);
-	else {
+	if (chapters.length === 1) {
+		Sequence(chapters[0][0], chapters[0][1]);
+	} else {
 		Sequence(
 			chapters[0][0],
 			chapters[0][1],
 			((chapters) => () => {
-				for (let ci = 1; ci < chapters.length; ci++)
+				for (let ci = 1; ci < chapters.length; ci++) {
 					Sequence(chapters[ci][0], chapters[ci][1]);
+				}
 			})(chapters),
 		);
 	}

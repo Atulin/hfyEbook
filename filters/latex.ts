@@ -33,44 +33,52 @@ function tolatex(p: Params, $: Root, e: Cheerio) {
 
 		// console.log(id + el.type);
 
-		if (el.type === "text") l += filter(p, el.data ?? "");
-		else if (el.type === "tag") {
-			if (el.name === "em") l += `\\textit{${tolatex(p, $, elem)}}`;
-			else if (el.name === "strong") l += `\\textbf{${tolatex(p, $, elem)}}`;
-			else if (el.name === "pre" || el.name === "code")
+		if (el.type === "text") {
+			l += filter(p, el.data ?? "");
+		} else if (el.type === "tag") {
+			if (el.name === "em") {
+				l += `\\textit{${tolatex(p, $, elem)}}`;
+			} else if (el.name === "strong") {
+				l += `\\textbf{${tolatex(p, $, elem)}}`;
+			} else if (el.name === "pre" || el.name === "code") {
 				l += `\\monosp{${tolatex(p, $, elem).replace(/\n/g, "\\\\*")}}`;
-			else if (el.name === "a")
+			} else if (el.name === "a") {
 				l += `\\href{${l_esc(el.attribs.href)}}{${tolatex(p, $, elem)}}`;
-			else if (el.name === "p") {
+			} else if (el.name === "p") {
 				const t = tolatex(p, $, elem);
 
 				if (elem.attr("class") === "center") {
-					if (t === "⁂") l += "\\asterism\n";
-					else l += `\\begin{center}${t}\\end{center}`;
-				} else
-					l +=
-						t.replace(/\n\n?/g, "\n") + (t.indexOf("\\star") > -1 ? "" : "\n");
-			} else if (el.name === "blockquote")
+					if (t === "⁂") {
+						l += "\\asterism\n";
+					} else {
+						l += `\\begin{center}${t}\\end{center}`;
+					}
+				} else {
+					l += t.replace(/\n\n?/g, "\n") + (t.indexOf("\\star") > -1 ? "" : "\n");
+				}
+			} else if (el.name === "blockquote") {
 				l += `\\begin{displayquote}\n${tolatex(p, $, elem)}\n\\end{displayquote}`;
-			else if (el.name === "span") l += tolatex(p, $, elem);
-			else if (el.name === "li") l += `\\item ${tolatex(p, $, elem)}`;
-			else if (el.name === "ul")
+			} else if (el.name === "span") {
+				l += tolatex(p, $, elem);
+			} else if (el.name === "li") {
+				l += `\\item ${tolatex(p, $, elem)}`;
+			} else if (el.name === "ul") {
 				l += `\\begin{itemize}${tolatex(p, $, elem)}\n\\end{itemize}`;
-			else if (el.name === "ol")
+			} else if (el.name === "ol") {
 				l += `\\begin{enumerate}${tolatex(p, $, elem)}\n\\end{enumerate}`;
-			else if (el.name === "br") l += "\\\\*\n";
-			else if (el.name === "s" || el.name === "del" || el.name === "strike")
+			} else if (el.name === "br") {
+				l += "\\\\*\n";
+			} else if (el.name === "s" || el.name === "del" || el.name === "strike") {
 				l += `\\sout{${tolatex(p, $, elem)}}`;
-			else if (el.name === "sup")
+			} else if (el.name === "sup") {
 				l += `\\textsuperscript{${tolatex(p, $, elem)}}`;
-			else {
+			} else {
 				console.log(`LaTeX: Unhandled tag: ${el.name}`);
 				l += tolatex(p, $, elem);
 			}
 		}
 
-		latex +=
-			el.type !== "tag" || el.name !== "p" ? l.replace(/\n\n?/g, "\n") : l;
+		latex += el.type !== "tag" || el.name !== "p" ? l.replace(/\n\n?/g, "\n") : l;
 	});
 
 	return latex;
@@ -185,8 +193,9 @@ export function apply(params: Params, next: () => void) {
 
 		latex += `\n\\clearpage\n\\section{\\textsc{${c_title}}}\n`;
 
-		if (chap.byline)
+		if (chap.byline) {
 			latex += `\\vspace{-2em}\\textsc{By ${l_esc(chap.byline)}}\\vspace{1em}\\\\*\n`;
+		}
 
 		latex += tolatex(params, chap.dom, chap.dom.root());
 	}

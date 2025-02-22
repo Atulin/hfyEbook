@@ -1,13 +1,7 @@
 {
 	"title": "Chrysalis",
 	"creator": "BeaverFur",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"chrysalis",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "chrysalis", "typography", "finalize"],
 	"filename": "Chrysalis",
 	"output": ["epub", "latex", "html"],
 	"contents": [

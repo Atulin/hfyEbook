@@ -22,17 +22,20 @@ function to_html($: Root, el: Cheerio, ctx: { have_text: boolean }) {
 				if (nxt_is_br) {
 					i++;
 					html += "</p>\n<p>\n";
-				} else if (ctx.have_text) html += "</p>\n<p>\n";
+				} else if (ctx.have_text) {
+					html += "</p>\n<p>\n";
+				}
 
 				ctx.have_text = false;
 			} else if (c.name === "span") {
 				const e = $(c);
 				const s = e.attr("style");
 
-				if (s === "font-style: italic")
+				if (s === "font-style: italic") {
 					html += `<em>${to_html($, e, ctx)}</em>`;
-				else if (s === "font-weight: bold")
+				} else if (s === "font-weight: bold") {
 					html += `<strong>${to_html($, e, ctx)}</strong>`;
+				}
 			}
 		} else if (c.type === "text") {
 			const txt = c.data

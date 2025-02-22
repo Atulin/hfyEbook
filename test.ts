@@ -24,9 +24,7 @@ for await (const file of files) {
 		continue;
 	}
 
-	const { stdout, stderr, exitCode } = await $`bun ebook.mts 'specs/${spec}'`
-		.nothrow()
-		.quiet();
+	const { stdout, stderr, exitCode } = await $`bun ebook.mts 'specs/${spec}'`.nothrow().quiet();
 
 	const now = (Bun.nanoseconds() - start) / 1_000_000; // milliseconds
 	if (exitCode === 0) {

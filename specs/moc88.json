@@ -2,13 +2,7 @@
 	"title": "Memories of Creature 88",
 	"creator": "RegalLegalEagle",
 	"patreon": "https://www.patreon.com/user?u=2300449",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"no-preamble",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "no-preamble", "typography", "finalize"],
 	"filename": "Memories of Creature 88",
 	"output": ["epub", "latex", "html"],
 	"contents": [

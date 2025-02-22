@@ -31,11 +31,9 @@ function createContents(spec: Spec, uuid: string) {
 		`.trimStart();
 
 	xml += "  <manifest>\n";
-	xml +=
-		'    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />\n';
+	xml += '    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />\n';
 	xml += '    <item id="style" href="style.css" media-type="text/css" />\n';
-	xml +=
-		'    <item id="cover" href="cover.xhtml" media-type="application/xhtml+xml" />\n';
+	xml += '    <item id="cover" href="cover.xhtml" media-type="application/xhtml+xml" />\n';
 
 	let itm_xml = "";
 	let ref_xml = "";
@@ -122,8 +120,9 @@ function createTitle(title: string) {
 	let html = "";
 	const lines = title.split("\n");
 
-	for (let i = 0; i < lines.length; i++)
+	for (let i = 0; i < lines.length; i++) {
 		html += `        <h1 class="center">${escapeHTML(lines[i])}</h1>\n`;
+	}
 
 	return html;
 }
@@ -150,8 +149,9 @@ function createCover(params: Params) {
 		        <h3 class="center">By ${escapeHTML(spec.creator)}</h3>
 	`.trimStart();
 
-	if (spec.patreon)
+	if (spec.patreon) {
 		html += `        <p><br/></p><h3 class="center">Donate securely to the author at <a href="${spec.patreon}">patreon.com</a></h3>\n`;
+	}
 
 	return `${html}    </body>\n</html>`;
 }

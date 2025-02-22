@@ -1,13 +1,7 @@
 {
 	"title": "MIA",
 	"creator": "GoingAnywhereButHere",
-	"filters": [
-		"from-reddit-post",
-		"clean-reddit",
-		"jverse-mia",
-		"typography",
-		"finalize"
-	],
+	"filters": ["from-reddit-post", "clean-reddit", "jverse-mia", "typography", "finalize"],
 	"filename": "MIA",
 	"output": ["epub", "latex", "html"],
 	"contents": [

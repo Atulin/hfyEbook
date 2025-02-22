@@ -16,11 +16,11 @@ function display($: Root, indent: string, root: Cheerio) {
 			console.log(`${indent}<${c.name}>`);
 			display($, `${indent}    `, $(c));
 			console.log(`${indent}</${c.name}>`);
-		} else if (c.type === "text")
-			console.log(
-				`${indent}[${c.data && c.data?.length < 40 ? filter_txt(c.data) : "..."}]`,
-			);
-		else console.log(`${indent}[${c.type.toUpperCase()}]`);
+		} else if (c.type === "text") {
+			console.log(`${indent}[${c.data && c.data?.length < 40 ? filter_txt(c.data) : "..."}]`);
+		} else {
+			console.log(`${indent}[${c.type.toUpperCase()}]`);
+		}
 	}
 }
 

@@ -11,13 +11,17 @@ export function apply(params: Params, next: () => void) {
 		ps.each((_, e) => {
 			const p = $(e);
 
-			if (p.text() === "&amp;nbsp") rem.push(p);
+			if (p.text() === "&amp;nbsp") {
+				rem.push(p);
+			}
 		});
 	}
 
 	const lp = $(ps[ps.length - 1]);
 
-	if (lp.text().match(/^Part \w+$/)) rem.push(lp);
+	if (lp.text().match(/^Part \w+$/)) {
+		rem.push(lp);
+	}
 
 	params.purge(rem);
 	next();

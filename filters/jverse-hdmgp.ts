@@ -21,14 +21,18 @@ export function apply(params: Params, next: () => void) {
 	$("p").each((i, e) => {
 		const el = $(e);
 
-		if (el.find("a").length || el.contents().length < 1) rem.push(el);
+		if (el.find("a").length || el.contents().length < 1) {
+			rem.push(el);
+		}
 	});
 
 	// Remove 'All chapter' references
 	$("p span").each((i, e) => {
 		const el = $(e);
 
-		if (el.text() === "All chapters") rem.push(el.parent());
+		if (el.text() === "All chapters") {
+			rem.push(el.parent());
+		}
 	});
 
 	$("h2").each((i, e) => {
@@ -40,7 +44,9 @@ export function apply(params: Params, next: () => void) {
 	const html = $.html(pa);
 
 	if (html.length < 500) {
-		for (let i = 0; i < pa.length; i++) rem.push($(pa[i]));
+		for (let i = 0; i < pa.length; i++) {
+			rem.push($(pa[i]));
+		}
 	}
 
 	params.purge(rem);

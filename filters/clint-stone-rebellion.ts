@@ -34,14 +34,22 @@ export function apply(params: Params, next: () => void) {
 
 	const ps = $("p");
 
-	if (rem_last_p.includes(chap.title)) rem.push($(ps[ps.length - 1]));
+	if (rem_last_p.includes(chap.title)) {
+		rem.push($(ps[ps.length - 1]));
+	}
 
-	if (rem_last_p2.includes(chap.title)) rem.push($(ps[ps.length - 2]));
+	if (rem_last_p2.includes(chap.title)) {
+		rem.push($(ps[ps.length - 2]));
+	}
 
 	if (["Evaluation", "Captive", "Behold"].includes(chap.title)) {
-		for (let i = 0; i < 2; i++) rem.push($(ps[ps.length - (i + 1)]));
+		for (let i = 0; i < 2; i++) {
+			rem.push($(ps[ps.length - (i + 1)]));
+		}
 	} else if (["Broken", "The Lives We Lived"].includes(chap.title)) {
-		for (let i = 0; i < 3; i++) rem.push($(ps[ps.length - (i + 1)]));
+		for (let i = 0; i < 3; i++) {
+			rem.push($(ps[ps.length - (i + 1)]));
+		}
 	}
 
 	params.purge(rem);

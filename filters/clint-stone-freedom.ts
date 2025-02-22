@@ -26,10 +26,13 @@ export function apply(params: Params, next: () => void) {
 	const ps = $("p");
 	const lp = $(ps[ps.length - 1]);
 
-	if (rem_last_p.includes(chap.title) || lp.find("a").length) rem.push(lp);
+	if (rem_last_p.includes(chap.title) || lp.find("a").length) {
+		rem.push(lp);
+	}
 
-	if (chap.title === "Retribution") rem.push($(ps[ps.length - 2]));
-	else if (chap.title === "Greetings") {
+	if (chap.title === "Retribution") {
+		rem.push($(ps[ps.length - 2]));
+	} else if (chap.title === "Greetings") {
 		rem.push($(ps[ps.length - 2]));
 		rem.push($(ps[ps.length - 3]));
 	}

@@ -13,8 +13,9 @@ function getContinuations(set: Child[], author: string) {
 		if (c.author === author && c.body_html.length > 1000) {
 			let html = `\n\n\n------\n\n\n${c.body}`;
 
-			if (c.replies.data)
+			if (c.replies.data) {
 				html += getContinuations(c.replies.data.children, author);
+			}
 
 			return html;
 		}
@@ -70,11 +71,7 @@ function get(params: Params, callback: () => void) {
 		(
 			(params, callback): RequestCallback =>
 			(error: unknown, response: request.Response | null, body) => {
-				if (
-					!response ||
-					response.statusCode === 503 ||
-					Bun.stringWidth(body) < 1
-				) {
+				if (!response || response.statusCode === 503 || Bun.stringWidth(body) < 1) {
 					console.log(`${chalk.red("Retrying")} ${params.chap.id}`);
 					console.log(`Error ${error}`);
 					get(params, callback);

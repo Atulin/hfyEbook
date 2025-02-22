@@ -44,7 +44,9 @@ export function apply(params: Params, next: () => void) {
 		"The Human Experience": [1, 0],
 	});
 
-	if (rem.length) params.purge(rem);
+	if (rem.length) {
+		params.purge(rem);
+	}
 
 	next();
 }

@@ -9,10 +9,11 @@ export function apply(params: Params, next: () => void) {
 		let pa: Cheerio | null = null;
 		let len = 2500;
 
-		if (params.chap["no-preamble-treshold"] !== undefined)
+		if (params.chap["no-preamble-treshold"] !== undefined) {
 			len = params.chap["no-preamble-treshold"];
-		else if (params.spec["no-preamble-treshold"] !== undefined)
+		} else if (params.spec["no-preamble-treshold"] !== undefined) {
 			len = params.spec["no-preamble-treshold"];
+		}
 
 		hrs.each((_, e) => {
 			const c = $(e).prevAll();
