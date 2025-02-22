@@ -1,0 +1,260 @@
+{
+	"title": "The Most Impressive Planet",
+	"creator": "Voltstagge",
+	"filters": [
+		"from-reddit-post",
+		"clean-reddit",
+		"the-most-impressive-planet",
+		"no-preamble",
+		"typography",
+		"finalize"
+	],
+	"filename": "The Most Impressive Planet",
+	"output": ["epub", "latex", "html"],
+	"contents": [
+		{
+			"src": "http://www.reddit.com/r/HFY/comments/30ewts/oc_the_most_impressive_planet/",
+			"title": "Chapter 1: The Most Impressive Planet."
+		},
+		{
+			"src": "http://www.reddit.com/r/HFY/comments/30ut6g/octhe_most_impressive_planet_stranded/",
+			"title": "Chapter 2: Stranded."
+		},
+		{
+			"src": "http://www.reddit.com/r/HFY/comments/32ajco/ocmercenaries_from_the_most_impressive_planet/",
+			"title": "Chapter 3: Mercenaries From the Most Impressive Planet."
+		},
+		{
+			"src": "http://www.reddit.com/r/HFY/comments/32qs1o/oca_politician_from_the_most_impressive_planet/",
+			"title": "Chapter 4: A Politician From the Most Impressive Planet."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/335upv/ocexploring_beyond_the_most_impressive_planet/",
+			"title": "Chapter 5: Exploring Beyond the Most Impressive Planet."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/33vip6/octhe_most_impressive_planet_act_2_investigative/",
+			"title": "Chapter 6: Investigative Journalism."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/34bref/octhe_most_impressive_planet_act_2_the_black_room/",
+			"title": "Chapter 7: The Black Room."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/358gl3/octhe_most_impressive_planet_act_2_the_truth_and/",
+			"title": "Chapter 8: The Truth and a Return to Earth."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/3p4nuy/the_most_impressive_planet_back_from_the_dead/",
+			"title": "Chapter 9: Back From the Dead."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/3qgw1c/the_most_impressive_planet_breaking_the_news/",
+			"title": "Chapter 10: Breaking the News."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/3y4jtm/the_most_impressive_planet_funerals_and_science/",
+			"title": "Chapter 11: Funerals and Science."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/40ztcr/the_most_impressive_planet_earths_future/",
+			"title": "Chapter 12: Earth's Future."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/45r51r/the_most_impressive_planet_thunderstorms/",
+			"title": "Chapter 13: Thunderstorms."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4b43am/the_most_impressive_planet_in_the_vault_of_the/",
+			"title": "Chapter 14: In the Vault of the Mountain Kings."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4c2wj6/the_most_impressive_planet_knife_of_butterflies/",
+			"title": "Chapter 15: Knife of Butterflies."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4enydj/the_most_impressive_planet_brainbomb/",
+			"title": "Chapter 16: Brainbomb."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4i9s0a/the_most_impressive_planet_kings_and_judges/",
+			"title": "Chapter 17: Kings and Judges."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4jbbi6/the_most_impressive_planet_honesty_from_liars/",
+			"title": "Chapter 18: Honesty from Liars."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4ko2cu/the_most_impressive_planet_light/",
+			"title": "Chapter 19: Light."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4lfs2m/the_most_impressive_planet_controlling_fate/",
+			"title": "Chapter 20: Controlling Fate."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4miixg/the_most_impressive_planet_wreckage_from_the_past/",
+			"title": "Chapter 21: Wreckage from the Past."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4npz9k/the_most_impressive_planet_a_most_monstrous/",
+			"title": "Chapter 22: A Most Monstrous Species."
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4o6tbc/the_most_impressive_planet_home/",
+			"title": "Chapter 23: Home"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4pzzsu/the_most_impressive_planet_human_armor_foreign/",
+			"title": "Chapter 24: Human Armors, Foreign Mountains, Alien Fingers"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4qt1r9/the_most_impressive_planet_before_the_oncoming_war/",
+			"title": "Chapter 25: Before the Oncoming War"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4tfpee/the_most_impressive_planet_show_of_force/",
+			"title": "Chapter 26: Show of Force"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4u88v0/the_most_impressive_planet_converging_on_sol/",
+			"title": "Chapter 27: Converging on Sol"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4vhsba/the_most_impressive_planet_blatant_lies/",
+			"title": "Chapter 28: Blatant Lies"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4wr4hc/the_most_impressive_planet_history_lesson/",
+			"title": "Chapter 29: History Lesson"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4xud0n/the_most_impressive_planet_shell_game/",
+			"title": "Chapter 30: Shell Game"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/4zu6hh/the_most_impressive_planet_hunting_dewolfe/",
+			"title": "Chapter 31: Hunting DeWolfe"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/50u6bq/the_most_impressive_planet_where_angels_fear/",
+			"title": "Chapter 32: Where Angels Fear"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/52q7so/the_most_impressive_planet_in_times_like_these/",
+			"title": "Chapter 33: In Times Like These"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/56s4x1/the_most_impressive_planet_the_winds_of_winters/",
+			"title": "Chapter 34: The Winds of Winters"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/5hmf38/the_most_impressive_planet_the_escape/",
+			"title": "Chapter 35: The Escape"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/5m25df/the_most_impressive_planet_the_patriots/",
+			"title": "Chapter 36: The Patriots"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/5rfqqp/the_most_impressive_planet_assault_on_the_filter/",
+			"title": "Chapter 37: Assault on the Filter"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/5tfafn/the_most_impressive_planet_red/",
+			"title": "Chapter 38: Red"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/5wa3lo/the_most_impressive_planet_reflections/",
+			"title": "Chapter 39: Reflections"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/61fs7o/the_most_impressive_planet_the_cost/",
+			"title": "Chapter 40: The Cost"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/66vtc0/the_most_impressive_planet_closer_to_the_heart/",
+			"title": "Chapter 41: Closer to the Heart"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/6j8rcb/the_most_impressive_planet_into_the_storm/",
+			"title": "Chapter 42: Into the Storm"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/73b7oq/the_most_impressive_planet_worst_laid_plans/",
+			"title": "Chapter 43: Worst Laid Plans"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/74uwbk/the_most_impressive_planet_off_camera/",
+			"title": "Chapter 44: Off Camera"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/78jbmr/the_most_impressive_planet_rock_bottom/",
+			"title": "Chapter 45: Rock Bottom"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/7dt6z6/the_most_impressive_planet_power/",
+			"title": "Chapter 46: Power"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/7kftjg/the_most_impressive_planet_point_of_no_return/",
+			"title": "Chapter 47: The Point of No Return"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/7n29t1/the_most_impressive_planet_reaching_out_opening_up/",
+			"title": "Chapter 48: Reaching Out, Opening Up"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/7wenqd/the_most_impressive_planet_lost_for_words/",
+			"title": "Chapter 49: Lost for Words"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/8iz2d8/the_most_impressive_planet_mad_world/",
+			"title": "Chapter 50: Mad World"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/8o1bxq/the_most_impressive_planet_under_pressure/",
+			"title": "Chapter 51: Under Pressure"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/92gzll/the_most_impressive_planet_desperate_times/",
+			"title": "Chapter 52: Desperate Times"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/96iafa/the_most_impressive_planet_denizens_of_the_deep/",
+			"title": "Chapter 53: Denizens of the Deep"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/9p0z6y/the_most_impressive_planet_the_shadow_of_gardener/",
+			"title": "Chapter 54: The Shadow of Gardener Point"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/ahmlrk/the_most_impressive_planet_high_treason/",
+			"title": "Chapter 55: High Treason"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/ake696/the_most_impressive_planet_a_revelation_of/",
+			"title": "Chapter 56: A Revelation of Horsemen"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/c1cyta/the_most_impressive_planet_entropy/",
+			"title": "Chapter 57: Entropy"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/cgz6aa/the_most_impressive_planet_only_as_good_as_my_god/",
+			"title": "Chapter 58: Only As Good As My God"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/dxnvk5/the_most_impressive_planet_bound_by_gravity/",
+			"title": "Chapter 59: Bound By Gravity"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/e0lnur/the_most_impressive_planet_radical_action/",
+			"title": "Chapter 60: Radical Action"
+		},
+		{
+			"src": "https://www.reddit.com/r/HFY/comments/gcw0s2/the_most_impressive_planet_the_uncaring_sky/",
+			"title": "Chapter 61: The Uncaring Sky"
+		}
+	]
+}

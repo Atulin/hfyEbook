@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import {join} from "node:path";
-import {Params} from "./types/params.js";
-import {Contents, Spec} from "./types/spec.js";
+import { join } from "node:path";
+import type { Params } from "./types/params.js";
+import type { Contents, Spec } from "./types/spec.js";
 import Cheerio = cheerio.Cheerio;
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
@@ -42,8 +42,7 @@ function decode_crs(s: string) {
 	while ((i = ls.search(/&#.*;/)) > -1) {
 		const ni = ls.indexOf(";", i);
 
-		ls =
-			ls.slice(0, i) + decode_cr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
+		ls = ls.slice(0, i) + decode_cr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
 	}
 
 	return ls;
@@ -92,7 +91,7 @@ function FilterManager() {
 	}
 }
 
-FilterManager.prototype.get = function (fid: string) {
+FilterManager.prototype.get = (fid: string) => {
 	const filter = filters[fid];
 
 	if (!filter) {
@@ -129,7 +128,11 @@ function Finalize(params: Params) {
 
 type SequenceCb = ((chapters: Contents[] | null) => void) | null;
 
-function Sequence(ops: ((params: Params, next: () => void) => void)[], params: Params, cb: SequenceCb = null) {
+function Sequence(
+	ops: ((params: Params, next: () => void) => void)[],
+	params: Params,
+	cb: SequenceCb = null,
+) {
 	if (ops.length < 2)
 		throw `${ERROR_TAG}Cannot create a sequence of less than two operations.`;
 
@@ -140,15 +143,17 @@ function Sequence(ops: ((params: Params, next: () => void) => void)[], params: P
 
 	for (let i = ops.length - 1; i >= 0; i--)
 		last = ((cur, nxt) => () => {
-			cur && cur(params, nxt);
+			cur?.(params, nxt);
 		})(ops[i], last);
 
 	last();
 }
 
 // Load the spec. Start processing.
-const spec: Spec = await Bun.file(join(import.meta.dir, process.argv[2])).json();
-const sched: {[key: string]: [(() => void)[], Params][]} = {};
+const spec: Spec = await Bun.file(
+	join(import.meta.dir, process.argv[2]),
+).json();
+const sched: { [key: string]: [(() => void)[], Params][] } = {};
 const uri_cache = new UriCache();
 
 spec.loaded = 0;
@@ -185,7 +190,7 @@ for (let i = 0; i < spec.contents.length; i++) {
 	const ops: (() => void)[] = [];
 	const filter_type = Object.prototype.toString.call(spec.filters);
 
-	if (spec.filters instanceof Array) {
+	if (Array.isArray(spec.filters)) {
 		for (let fi = 0; fi < spec.filters.length; fi++)
 			ops.push(filter_mgr.get(spec.filters[fi]));
 	} else if (filter_type === "[object Object]") {

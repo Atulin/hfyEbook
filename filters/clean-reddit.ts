@@ -40,22 +40,24 @@ export function apply(params: Params, next: () => void) {
 
 	// Remove all links that are not external
 	$("a").each((i, e) => {
-		if (e.attribs?.href) {
+		const el = e as cheerio.TagElement;
+		if (el.attribs?.href) {
 			if (
-				e.attribs.href.startsWith("http://www.reddit.com") ||
-				e.attribs.href.startsWith("https://www.reddit.com")
+				el.attribs.href.startsWith("http://www.reddit.com") ||
+				el.attribs.href.startsWith("https://www.reddit.com")
 			) {
-				e.name = "span";
-				e.attribs = undefined;
+				el.name = "span";
+				el.attribs = {};
 			}
 		}
 	});
 
 	// Remove all classes and ids
 	$("*").each((i, e) => {
-		if (e.attribs) {
-			e.attribs.class = undefined;
-			e.attribs.id = undefined;
+		const el = e as cheerio.TagElement;
+		if (el.attribs) {
+			el.attribs.class = "";
+			el.attribs.id = "";
 		}
 	});
 
