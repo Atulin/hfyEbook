@@ -16,7 +16,7 @@ local or online material in HTML or MarkDown to any or all of:
 
 Run `bun install` to install the dependencies, and you should be good to go.
 
-## ## Usage
+## Usage
 
 `bun ebook.mts 'spec.json'`
 
