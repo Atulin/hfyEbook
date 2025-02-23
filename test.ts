@@ -3,9 +3,11 @@ import { $, Glob } from "bun";
 import chalk from "chalk";
 
 const logDir = "logs";
-const wait = 5;
+const outDir = "test-output";
+const wait = 15;
 
-await $`rm -r ${logDir}`;
+await $`rm -r ${logDir}`.nothrow();
+await $`rm -r ${outDir}`.nothrow();
 
 const files = new Glob("./specs/*.json").scan();
 
@@ -15,7 +17,7 @@ const stat = { failed: 0, passed: 0 };
 for await (const file of files) {
 	const spec = file.split(sep).at(-1);
 
-	console.log(`🧪Testing spec ${chalk.blue(spec)}`);
+	console.log(`🧪 Testing spec ${chalk.blue(spec)}`);
 	const start = Bun.nanoseconds();
 
 	if (!spec) {
@@ -24,7 +26,9 @@ for await (const file of files) {
 		continue;
 	}
 
-	const { stdout, stderr, exitCode } = await $`bun ebook.mts 'specs/${spec}'`.nothrow().quiet();
+	const { stdout, stderr, exitCode } = await $`OUTPUT=${outDir} bun ebook.ts -- --spec "${spec}"`
+		.nothrow()
+		.quiet();
 
 	const now = (Bun.nanoseconds() - start) / 1_000_000; // milliseconds
 	if (exitCode === 0) {

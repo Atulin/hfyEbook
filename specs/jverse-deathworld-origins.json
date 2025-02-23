@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "Deathworld Origins",
 	"creator": "captainmeta4",
 	"filters": ["from-reddit-post", "clean-reddit", "jverse-do", "typography", "finalize"],

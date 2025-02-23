@@ -1,7 +1,7 @@
+import fs from "node:fs";
+import { dirname, join } from "node:path";
 import chalk from "chalk";
 import type { Params } from "../types/params.js";
-import fs from "node:fs";
-import { join, dirname } from "node:path";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
 

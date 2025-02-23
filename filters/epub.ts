@@ -1,11 +1,14 @@
 import fs from "node:fs";
+import { join } from "node:path";
 import dedent from "dedent";
 import uuid from "node-uuid";
 import type { Params } from "../types/params.js";
-import type { Contents, Spec } from "../types/spec.js";
+import type { Contents, InternalContents, InternalSpec, Spec } from "../types/spec.js";
 
 // NOTES:
 // FBReader does not support text strikethrough (tags: s, del, strike)
+
+const output = Bun.env.OUTPUT ?? "output";
 
 function escapeHTML(txt: string) {
 	return txt
@@ -16,7 +19,7 @@ function escapeHTML(txt: string) {
 		.replace(/>/g, "&#0062;");
 }
 
-function createContents(spec: Spec, uuid: string) {
+function createContents(spec: InternalSpec, uuid: string) {
 	const creator = escapeHTML(spec.creator);
 
 	let xml = dedent`
@@ -54,7 +57,7 @@ function createContents(spec: Spec, uuid: string) {
 	return `${xml}  </spine>\n</package>`;
 }
 
-function createTOC(spec: Spec, uuid: string) {
+function createTOC(spec: InternalSpec, uuid: string) {
 	let xml = dedent`
 		<?xml version="1.0" encoding="utf-8"?>
 		<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
@@ -92,7 +95,7 @@ function createTOC(spec: Spec, uuid: string) {
 	return `${xml}  </navMap>\n</ncx>`;
 }
 
-function createXHTML(params: Params, chap: Contents) {
+function createXHTML(params: Params, chap: InternalContents) {
 	const title = escapeHTML(chap.title);
 
 	let xml = dedent`
@@ -160,7 +163,7 @@ export function apply(params: Params, next: () => void) {
 	const spec = params.spec;
 	const uid = uuid.v4();
 	const zip = require("node-zip")();
-	const oname = `output/${spec.filename}.epub`;
+	const oname = join(output, `${spec.filename}.epub`);
 
 	console.log(`Building ${oname}`);
 

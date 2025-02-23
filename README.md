@@ -135,7 +135,7 @@ Local files are not cached.
   * Submission continuations in comments are automatically detected and
     concatenated with the main submission text before further processing.
 
-* "from-url"
+* **"from-url"**
   * Downloads and caches the full response from an arbitrary URL. It is the
     responsibility of the user to insert additional filters in the processing
     chain that extracts the content, and presents it as a DOM that is useable

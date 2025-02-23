@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "Chronicles of Clint Stone\nPart 3: Warpath",
 	"creator": "someguynamedted",
 	"filters": ["from-reddit-post", "clean-reddit", "no-preamble", "typography", "finalize"],

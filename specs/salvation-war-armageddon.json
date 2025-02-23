@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "The Salvation War\nArmageddon",
 	"creator": "Stuart Slade",
 	"filters": ["from-url", "salvation-war", "typography", "finalize"],

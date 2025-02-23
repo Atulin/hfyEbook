@@ -1,94 +1,35 @@
-import fs from "node:fs";
-import { join, basename } from "node:path";
+import { join } from "node:path";
+import { parseArgs } from "node:util";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import type { Params } from "./types/params.js";
-import type { Contents, Spec } from "./types/spec.js";
-import Cheerio = cheerio.Cheerio;
+import { decode_crs, purge, unescape_html } from "./lib/Cleaners.js";
 import { FilterManager } from "./lib/FilterManager.js";
+import { ensureDir } from "./lib/Helpers.js";
+import { selectSpec } from "./lib/SpecSelector.js";
 import { UriCache } from "./lib/UriCache.js";
-import { Glob } from "bun";
-import { search } from "@inquirer/prompts";
-import Fuse from "fuse.js";
+import type { Params } from "./types/params.js";
+import { type Contents, type InternalSpec, type Spec, SpecSchema } from "./types/spec.js";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
-const DEBUG = false;
-
-function ensure_dir(dir: string) {
-	const full_path = `${import.meta.dir}/${dir}`;
-
-	if (!fs.existsSync(full_path)) {
-		fs.mkdirSync(full_path);
-	}
-}
 
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
-ensure_dir("cache");
-ensure_dir("output");
+await ensureDir("cache");
+await ensureDir(Bun.env.OUTPUT ?? "output");
 
-const specs = [...new Glob(join(import.meta.dir, "specs/*.json")).scanSync()];
-const fuse = new Fuse(specs, {});
-const selectedSpec = await search({
-	message: "Select a spec",
-	source: async (input) => {
-		if (!input) {
-			return [];
-		}
-
-		const results = fuse.search(input).map((result) => basename(result.item));
-		return Promise.resolve(
-			results.map((spec) => ({
-				name: spec,
-				value: spec,
-			})),
-		);
+const { values: args } = parseArgs({
+	args: Bun.argv,
+	options: {
+		spec: {
+			type: "string",
+			short: "s",
+			default: "",
+		},
 	},
+	strict: true,
+	allowPositionals: true,
 });
 
-function decode_cr(cr: string) {
-	const isHex = cr[2] === "x";
-
-	const start = isHex ? 3 : 2;
-	const end = cr.length - 2;
-	return String.fromCodePoint(Number.parseInt(cr.slice(start, end + start), isHex ? 16 : 10));
-}
-
-// Decode all HTML character references to unicode.
-function decode_crs(s: string) {
-	let ls = s;
-	let i = ls.search(/&#.*;/);
-
-	while (i > -1) {
-		const ni = ls.indexOf(";", i);
-		ls = ls.slice(0, i) + decode_cr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
-
-		i = ls.search(/&#.*;/);
-	}
-
-	return ls;
-}
-
-function unescape_html(html: string) {
-	return decode_crs(html.replace(/&amp;/g, "&"))
-		.replace(/&quot;/g, '"')
-		.replace(/&apos;/g, "'")
-		.replace(/&nbsp;/g, " ")
-		.replace(/&#39;/g, "'")
-		.replace(/&amp;#39;/g, "'")
-		.replace(/&amp;/g, "&");
-}
-
-function purge(set: Cheerio[]) {
-	for (let i = 0; i < set.length; i++) {
-		const e = set[i];
-
-		if (DEBUG) {
-			console.log(`${chalk.red("Delete")}: [${e.text()}]`);
-		}
-
-		e.remove();
-	}
-}
+const selectedSpec = await selectSpec(args);
 
 const filter_mgr = FilterManager.new();
 
@@ -144,10 +85,19 @@ function Sequence(
 }
 
 // Load the spec. Start processing.
-const spec: Spec = await Bun.file(join(import.meta.dir, "specs", selectedSpec)).json();
+const json = await Bun.file(join(import.meta.dir, "specs", selectedSpec)).json();
+
+const { data, success, error } = SpecSchema.safeParse(json);
+
+if (!success) {
+	console.log(`${ERROR_TAG}Spec is invalid: ${error.message}`);
+	process.exit(1);
+}
+
 const sched: { [key: string]: [((params: Params, next: () => void) => void)[], Params][] } = {};
 const uri_cache = UriCache.new();
 
+const spec = data as InternalSpec;
 spec.loaded = 0;
 
 for (let i = 0; i < spec.contents.length; i++) {

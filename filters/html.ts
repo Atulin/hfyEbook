@@ -1,9 +1,12 @@
 import fs from "node:fs";
+import { join } from "node:path";
 import type { Params } from "../types/params.js";
+
+const output = Bun.env.OUTPUT ?? "output";
 
 export function apply(params: Params, next: () => void) {
 	const spec = params.spec;
-	const oname = `output/${spec.filename}.html`;
+	const oname = join(output, `${spec.filename}.html`);
 	const vspace = "\n    <p><br/></p><p><br/></p><p><br/></p>\n\n";
 
 	let html = [

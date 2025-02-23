@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "Quod Erat Demonstrandum",
 	"creator": "devourerkwi",
 	"filters": ["from-reddit-post", "clean-reddit", "jverse-qed", "typography", "finalize"],

@@ -1,17 +1,17 @@
 import chalk from "chalk";
 import cheerio from "cheerio";
-import request from "request";
+import request, { type RequestCallback } from "request";
 import type { Params } from "../types/params.js";
 
 import fs from "node:fs";
 
-function uriToId(uri) {
+function uriToId(uri: string) {
 	const tokens = uri.split("/");
 
 	return `HFYA_${decodeURI(tokens.slice(tokens.length - 2, tokens.length).join("_"))}`;
 }
 
-function get(params, callback) {
+function get(params: Params, callback: () => void) {
 	if (params.uri_cache.cache.indexOf(params.chap.id) > -1) {
 		console.log(`${chalk.green("Cached")} ${params.chap.id}`);
 		params.chap.dom = cheerio.load(
@@ -26,39 +26,42 @@ function get(params, callback) {
 
 	request(
 		{ uri: params.chap.src },
-		((parmas, callback, uri_cache) => (error, response, body) => {
-			if (!response || response.statusCode === 503) {
-				console.log(`${chalk.red("Retrying")} ${params.chap.id}`);
-				get(params, callback);
-				return;
-			}
-			// hfy-archive has been moved and redirects the links with the following construct:
-			// requests does not follow these automatically
-			const regex = /link rel="canonical" href="([^"]+)[^>]+/;
-			const match = regex.exec(body);
-			if (match !== null) {
-				if (match[1] !== undefined) {
-					// We need a new request to fetch the real page
-					const host = response.req.res.request.uri.host;
-					request.get(
-						{
-							url: `http://${host}${match[1]}`,
-						},
-						(error, response, body) => {
-							if (error) {
-								console.log(error);
-							}
-							handleResponse(params, body, callback);
-						},
-					);
+		(
+			(parmas, callback, uri_cache): RequestCallback =>
+			(error: unknown, response: request.Response | null, body) => {
+				if (!response || response.statusCode === 503) {
+					console.log(`${chalk.red("Retrying")} ${params.chap.id}`);
+					get(params, callback);
+					return;
 				}
-			} else {
-				// The webpage doesn't contain a redirect
-				// Possibly this should be an error, I don't know if the archive
-				// does still host other stories or is being phased out.
-				handleResponse(params, body, callback);
+				// hfy-archive has been moved and redirects the links with the following construct:
+				// requests does not follow these automatically
+				const regex = /link rel="canonical" href="([^"]+)[^>]+/;
+				const match = regex.exec(body);
+				if (match !== null) {
+					if (match[1] !== undefined) {
+						// We need a new request to fetch the real page
+						const host = response.req.res.request.uri.host;
+						request.get(
+							{
+								url: `http://${host}${match[1]}`,
+							},
+							(error, response, body) => {
+								if (error) {
+									console.log(error);
+								}
+								handleResponse(params, body, callback);
+							},
+						);
+					}
+				} else {
+					// The webpage doesn't contain a redirect
+					// Possibly this should be an error, I don't know if the archive
+					// does still host other stories or is being phased out.
+					handleResponse(params, body, callback);
+				}
 			}
-		})(params, callback, this),
+		)(params, callback, this),
 	);
 }
 

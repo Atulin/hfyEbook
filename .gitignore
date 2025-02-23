@@ -1,5 +1,6 @@
 cache/
 node_modules/
 output/
+test-output/
 logs/
-.log
+*.log

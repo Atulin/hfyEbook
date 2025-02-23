@@ -30,6 +30,7 @@ export function apply(params: Params, next: () => void) {
 
 		const rem: Cheerio[] = [];
 
+		// BUG: What the fuck?
 		for (let i = 0; i < pa.length; i++) {
 			rem.push($(pa[i]));
 		}

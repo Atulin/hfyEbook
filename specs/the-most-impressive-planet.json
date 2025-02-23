@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "The Most Impressive Planet",
 	"creator": "Voltstagge",
 	"filters": [

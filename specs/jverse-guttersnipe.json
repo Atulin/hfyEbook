@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "Guttersnipe",
 	"creator": "Crocodilly_Pontifex",
 	"filters": ["from-reddit-post", "clean-reddit", "jverse-guttersnipe", "typography", "finalize"],

@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { join } from "node:path";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
 import { marked } from "marked";
@@ -86,7 +87,10 @@ function get(params: Params, callback: () => void) {
 					json = JSON.parse(body);
 				} catch (e) {
 					const time = Bun.nanoseconds();
-					body.length > 0 && Bun.write(`${time}.log`, body);
+					if (body.length > 0) {
+						const log = `${JSON.stringify(response.headers, null, 4)}\n\n${body}`;
+						Bun.write(join("logs", `${time}-${params.chap.title}.log`), log);
+					}
 					console.log(`ERROR ${e} (${time})`);
 					throw e;
 				}

@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "MIA",
 	"creator": "GoingAnywhereButHere",
 	"filters": ["from-reddit-post", "clean-reddit", "jverse-mia", "typography", "finalize"],

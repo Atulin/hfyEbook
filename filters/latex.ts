@@ -2,6 +2,9 @@ import fs from "node:fs";
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
 import Root = cheerio.Root;
+import { join } from "node:path";
+
+const output = Bun.env.OUTPUT ?? "output";
 
 function l_esc(txt: string) {
 	return txt
@@ -86,7 +89,7 @@ function tolatex(p: Params, $: Root, e: Cheerio) {
 
 export function apply(params: Params, next: () => void) {
 	const spec = params.spec;
-	const oname = `output/${spec.filename}.tex`;
+	const oname = join(output, `${spec.filename}.tex`);
 	const title = l_esc(spec.title);
 	const creator = l_esc(spec.creator);
 	const n_re = /\n/g;

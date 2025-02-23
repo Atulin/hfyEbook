@@ -1,0 +1,109 @@
+{
+  "$ref": "#/definitions/mySchema",
+  "definitions": {
+    "mySchema": {
+      "type": "object",
+      "properties": {
+        "patreon": {
+          "type": "string",
+          "description": "Link to the author's Patreon"
+        },
+        "title": {
+          "type": "string",
+          "description": "Used as the book title and as the basis for the output filename."
+        },
+        "creator": {
+          "type": "string",
+          "description": "The name of the author. Embedded into output meta-data and used for by-lines."
+        },
+        "filters": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "description": "Names of filters to be applied to each chapter sequentially, or a set of named filter name arrays."
+        },
+        "filename": {
+          "type": "string",
+          "description": "Specifies the base name for emitted output files. Omits extension, since that is appended by each output plugin (see below) as appropriate."
+        },
+        "output": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Used to specify one or more integrations filters that build output files based on the filtered chapter contents."
+        },
+        "contents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "byline": {
+                "type": "string",
+                "description": "If specified, this will add an author byline to this chapter. This can be used to support collected content by various authors with full per-chapter attribution."
+              },
+              "title": {
+                "type": "string",
+                "description": "The chapter title. Used to generate headings and when building TOCs."
+              },
+              "src": {
+                "type": "string",
+                "description": "The source location of the material for the given chapter. This can be any value appropriate to the chosen input filter"
+              },
+              "no-preamble-treshold": {
+                "type": "number"
+              },
+              "sw-part-index": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "title",
+              "src"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Each element of the array is an object describing a chapter."
+        },
+        "no-preamble-treshold": {
+          "type": "number"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "creator",
+        "filters",
+        "filename",
+        "output",
+        "contents",
+        "$schema"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

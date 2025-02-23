@@ -1,4 +1,5 @@
 {
+	"$schema": "_schema.json",
 	"title": "Chrysalis",
 	"creator": "BeaverFur",
 	"filters": ["from-reddit-post", "clean-reddit", "chrysalis", "typography", "finalize"],
