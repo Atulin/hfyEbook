@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { join } from "node:path";
+import { join, basename } from "node:path";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
 import type { Params } from "./types/params.js";
@@ -7,14 +7,12 @@ import type { Contents, Spec } from "./types/spec.js";
 import Cheerio = cheerio.Cheerio;
 import { FilterManager } from "./lib/FilterManager.js";
 import { UriCache } from "./lib/UriCache.js";
+import { Glob } from "bun";
+import { search } from "@inquirer/prompts";
+import Fuse from "fuse.js";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
 const DEBUG = false;
-
-if (process.argv.length < 3) {
-	console.log("Usage: ebook.js <spec.json>");
-	process.exit(1);
-}
 
 function ensure_dir(dir: string) {
 	const full_path = `${import.meta.dir}/${dir}`;
@@ -27,6 +25,25 @@ function ensure_dir(dir: string) {
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
 ensure_dir("cache");
 ensure_dir("output");
+
+const specs = [...new Glob(join(import.meta.dir, "specs/*.json")).scanSync()];
+const fuse = new Fuse(specs, {});
+const selectedSpec = await search({
+	message: "Select a spec",
+	source: async (input) => {
+		if (!input) {
+			return [];
+		}
+
+		const results = fuse.search(input).map((result) => basename(result.item));
+		return Promise.resolve(
+			results.map((spec) => ({
+				name: spec,
+				value: spec,
+			})),
+		);
+	},
+});
 
 function decode_cr(cr: string) {
 	const isHex = cr[2] === "x";
@@ -127,7 +144,7 @@ function Sequence(
 }
 
 // Load the spec. Start processing.
-const spec: Spec = await Bun.file(join(import.meta.dir, process.argv[2])).json();
+const spec: Spec = await Bun.file(join(import.meta.dir, "specs", selectedSpec)).json();
 const sched: { [key: string]: [((params: Params, next: () => void) => void)[], Params][] } = {};
 const uri_cache = UriCache.new();
 

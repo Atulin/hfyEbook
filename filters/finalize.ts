@@ -14,7 +14,7 @@ export function apply(params: Params, next: () => void) {
 		if (p.contents().length === 1) {
 			const cr = p.contents()[0];
 
-			if (cr.type === "text") {
+			if (cr.type === "text" && cr.data) {
 				if (params.decode_crs(cr.data).trim() === "") {
 					p.remove();
 				}
@@ -31,7 +31,7 @@ export function apply(params: Params, next: () => void) {
 	for (let i = 0; i < roots.length; i++) {
 		const r = roots[i];
 
-		if (r.type === "text" && r.data.search(newl) > -1) {
+		if (r.type === "text" && r.data && r.data.search(newl) > -1) {
 			if (rem) {
 				$(r).remove();
 			}
@@ -47,7 +47,7 @@ export function apply(params: Params, next: () => void) {
 
 	const last = roots[roots.length - 1];
 
-	if (last.type === "text" && last.data.search(newl) > -1) {
+	if (last.type === "text" && last.data && last.data.search(newl) > -1) {
 		$(last).remove();
 	}
 

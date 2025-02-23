@@ -8,10 +8,12 @@
 	"license": "MIT",
 	"main": "ebook.mts",
 	"dependencies": {
+		"@inquirer/prompts": "^7.3.2",
 		"chalk": "^5.3.0",
 		"cheerio": "^0.22.0",
 		"dedent": "^1.5.3",
 		"es-toolkit": "^1.32.0",
+		"fuse.js": "^7.1.0",
 		"marked": "^13.0.2",
 		"node-uuid": "^1.4.8",
 		"node-zip": "^1.1.1",

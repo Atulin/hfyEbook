@@ -26,7 +26,7 @@ function fixMonoEntities($: Root) {
 		for (let i = 0; i < cont.length; i++) {
 			const c = cont[i];
 
-			if (c.type === "text") {
+			if (c.type === "text" && c.data) {
 				while (pt.exec(c.data)) {
 					c.data = c.data.replace(pt, "&$1");
 				}

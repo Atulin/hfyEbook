@@ -14,11 +14,14 @@ local or online material in HTML or MarkDown to any or all of:
 
 ## Installation
 
+> [!NOTE]
+> This application needs [Bun](https://bun.sh/) to run.
+
 Run `bun install` to install the dependencies, and you should be good to go.
 
 ## Usage
 
-`bun ebook.mts 'spec.json'`
+`bun ebook.ts` then search for the desired spec and press `enter` to use it.
 
 Feel free to enjoy the resulting output files for personal consumption and to share any
 book specifications or filters you author with other users of this tool, but:
@@ -29,7 +32,7 @@ OF THE RIGHTS TO ALL MATERIAL THEY CONTAIN, I.E. DON'T BE A... BAD PERSON.
 
 ## Changes from upstream
 
-* Added user agent to solve https://github.com/stonewalljones/hfyEbook/issues/12
+* Added user agent to solve [stonewalljones/hfyEbook#12](https://github.com/stonewalljones/hfyEbook/issues/12)
 * Moved to Typescript
 * Updated dependencies
 * Moved to Bun as runtime
@@ -204,6 +207,7 @@ Local files are not cached.
 * The Deathworlders
 * The Fourth Wave
 * The Lost Minstrel
+* The Most Impressive Planet
 * The Salvation War: Amageddon / Pantheocide
 * The Xiu Chang Saga
 * Worm
@@ -216,7 +220,7 @@ Local files are not cached.
 * **"latex"**
   * Emits a TEX file with the name `[title].tex`. The format is optimized for
     processing with lualatex, but xelatex can be used.
-    
+
 * **"html"**
   * Emits a HTML file in the root directory with the name `[title].html`. The
     generated file has no external dependencies and can be uploaded or viewed
@@ -227,31 +231,33 @@ Local files are not cached.
 Each filter is implemented as a Node.JS module, and placed in the "filters"
 directory. Each filter module must export exactly one function:
 
-    function apply(params, next);
+```md
+function apply(params, next);
 
-    * "params" (object)
-        Represents the current task to be performed by the filter. Has two members:
+* "params" (object)
+    Represents the current task to be performed by the filter. Has two members:
 
-        * "spec" (object)
-            Represents the loaded specification file and contains members data as
-            described above.
+    * "spec" (object)
+        Represents the loaded specification file and contains members data as
+        described above.
 
-        * "chap" (object)
-            A reference to the spec.contents elements this filter is to process (if
-            used as a chapter filter), or null (if used as an output filter).
+    * "chap" (object)
+        A reference to the spec.contents elements this filter is to process (if
+        used as a chapter filter), or null (if used as an output filter).
 
-            In addition to the fields from above, it will be decorated by the
-            following members:
+        In addition to the fields from above, it will be decorated by the
+        following members:
 
-            * "dom" (object)
-                A Cheerio DOM object. For more information on how to work with
-                Cheerio, refer to the documentation at:
+        * "dom" (object)
+            A Cheerio DOM object. For more information on how to work with
+            Cheerio, refer to the documentation at:
 
-                https://github.com/cheeriojs/cheerio
+            https://github.com/cheeriojs/cheerio
 
-    * "next" (function())
-        A function that must be called by the filter when it completes and any
-        modifications to "params.chap.dom" have been completed.
+* "next" (function())
+    A function that must be called by the filter when it completes and any
+    modifications to "params.chap.dom" have been completed.
+```
 
 Thus, a minimal valid filter implementation is:
 
