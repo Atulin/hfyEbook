@@ -5,6 +5,8 @@ import * as cheerio from "cheerio";
 import type { Params } from "./types/params.js";
 import type { Contents, Spec } from "./types/spec.js";
 import Cheerio = cheerio.Cheerio;
+import { FilterManager } from "./lib/FilterManager.js";
+import { UriCache } from "./lib/UriCache.js";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
 const DEBUG = false;
@@ -36,13 +38,14 @@ function decode_cr(cr: string) {
 
 // Decode all HTML character references to unicode.
 function decode_crs(s: string) {
-	let i = -1;
 	let ls = s;
+	let i = ls.search(/&#.*;/);
 
-	while ((i = ls.search(/&#.*;/)) > -1) {
+	while (i > -1) {
 		const ni = ls.indexOf(";", i);
-
 		ls = ls.slice(0, i) + decode_cr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
+
+		i = ls.search(/&#.*;/);
 	}
 
 	return ls;
@@ -70,43 +73,7 @@ function purge(set: Cheerio[]) {
 	}
 }
 
-const cache = [];
-
-function UriCache() {
-	const files = fs.readdirSync(`${import.meta.dir}/cache`);
-
-	for (let i = 0; i < files.length; i++) {
-		cache.push(files[i]);
-	}
-}
-
-UriCache.prototype.cache = [];
-
-const filters: { [key: string]: { apply: () => void } } = {};
-
-function FilterManager() {
-	const files = fs.readdirSync(`${import.meta.dir}/filters`);
-
-	for (let i = 0; i < files.length; i++) {
-		const fname = files[i];
-		const fid = fname.slice(0, fname.length - 3);
-
-		filters[fid] = require(`./filters/${fname}`);
-	}
-}
-
-FilterManager.prototype.get = (fid: string) => {
-	const filter = filters[fid];
-
-	if (!filter) {
-		console.log(`${ERROR_TAG}No such filter: ${fid}`);
-		process.exit();
-	}
-
-	return filter.apply;
-};
-
-const filter_mgr = new FilterManager();
+const filter_mgr = FilterManager.new();
 
 function Finalize(params: Params) {
 	const spec = params.spec;
@@ -117,7 +84,7 @@ function Finalize(params: Params) {
 		if (spec.output.constructor === String) {
 			filter_mgr.get(spec.output)(params, () => {});
 		} else if (Array.isArray(spec.output)) {
-			const ops: (() => void)[] = [];
+			const ops: ((params: Params, next: () => void) => void)[] = [];
 
 			for (let i = 0; i < spec.output.length; i++) {
 				ops.push(filter_mgr.get(spec.output[i]));
@@ -161,8 +128,8 @@ function Sequence(
 
 // Load the spec. Start processing.
 const spec: Spec = await Bun.file(join(import.meta.dir, process.argv[2])).json();
-const sched: { [key: string]: [(() => void)[], Params][] } = {};
-const uri_cache = new UriCache();
+const sched: { [key: string]: [((params: Params, next: () => void) => void)[], Params][] } = {};
+const uri_cache = UriCache.new();
 
 spec.loaded = 0;
 
@@ -191,7 +158,7 @@ for (let i = 0; i < spec.contents.length; i++) {
 	params.chap.id = `${i}`;
 	params.chap.dom = cheerio.load("");
 
-	const ops: (() => void)[] = [];
+	const ops: ((params: Params, next: () => void) => void)[] = [];
 	const filter_type = Object.prototype.toString.call(spec.filters);
 
 	if (Array.isArray(spec.filters)) {
@@ -233,7 +200,7 @@ for (let i = 0; i < spec.contents.length; i++) {
 }
 
 for (const src in sched) {
-	if (!sched.hasOwnProperty(src)) {
+	if (!Object.hasOwn(sched, src)) {
 		continue;
 	}
 

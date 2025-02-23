@@ -3,8 +3,8 @@
 	"creator": "Voltstagge",
 	"filters": [
 		"from-reddit-post",
-		"clean-reddit",
 		"the-most-impressive-planet",
+		"clean-reddit",
 		"no-preamble",
 		"typography",
 		"finalize"

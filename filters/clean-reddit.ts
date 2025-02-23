@@ -2,6 +2,7 @@ import Root = cheerio.Root;
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
 import Element = cheerio.Element;
+import { omit } from "es-toolkit";
 
 function removeComments($: Root, el: Cheerio) {
 	$(el)
@@ -10,7 +11,7 @@ function removeComments($: Root, el: Cheerio) {
 			if (e.type === "comment") {
 				$(e).remove();
 			} else {
-				removeComments($, e);
+				removeComments($, $(e));
 			}
 		});
 }
@@ -61,8 +62,7 @@ export function apply(params: Params, next: () => void) {
 	$("*").each((i, e) => {
 		const el = e as cheerio.TagElement;
 		if (el.attribs) {
-			el.attribs.class = "";
-			el.attribs.id = "";
+			el.attribs = omit(el.attribs, ["class", "id"]);
 		}
 	});
 
