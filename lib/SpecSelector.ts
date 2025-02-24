@@ -2,6 +2,8 @@ import { basename, dirname, join } from "node:path";
 import { search } from "@inquirer/prompts";
 import { Glob } from "bun";
 import Fuse from "fuse.js";
+import { filename } from "./Helpers.js";
+import { toHeaderCase } from "js-convert-case";
 
 export const selectSpec = async (args: { spec: string }) => {
 	if (Bun.stringWidth(args.spec) > 0) {
@@ -18,11 +20,14 @@ export const selectSpec = async (args: { spec: string }) => {
 				return [];
 			}
 
-			const results = fuse.search(input).map((result) => basename(result.item));
-			return results.map((spec) => ({
-				name: spec,
-				value: spec,
-			}));
+			return fuse
+				.search(input)
+				.map((result) => basename(result.item))
+				.map((spec) => ({
+					name: toHeaderCase(filename(spec)),
+					value: spec,
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name));
 		},
 	}).catch(() => {
 		process.exit(0);

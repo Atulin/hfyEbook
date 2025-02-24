@@ -229,7 +229,7 @@ Local files are not cached.
 ## Authoring Filters
 
 Each filter is implemented as a Node.JS module, and placed in the "filters"
-directory. Each filter module must export exactly one function:
+directory. Each filter module must export a default object with one function:
 
 ```md
 function apply(params, next);
@@ -259,20 +259,28 @@ function apply(params, next);
     modifications to "params.chap.dom" have been completed.
 ```
 
-Thus, a minimal valid filter implementation is:
+The signature of the module is [`FilterModule`](./types/filter.ts). Each filter can be
+typed by using it with the `satisfies` keyword.
 
-```js
-export function apply(params, next)
-{
-    next();
-}
+Thus, a minimal fully-typed valid filter implementation is:
+
+```ts
+import type { FilterModule } from "../types/filter.js";
+
+export default {
+
+    apply(params: Params, next: () => void) {
+        next();
+    },
+
+} satisfies FilterModule as FilterModule;
 ```
 
 Any subsequent filter will not be applied until the preceding filter
 calls its supplied "next()" function. Consequently, the following is valid:
 
-```js
-function apply(params, next)
+```ts
+apply(params, next)
 {
     setTimeout(next, 1000);
 }
@@ -281,8 +289,8 @@ function apply(params, next)
 If the filter is written to be used as an input - the first filter in a chain -
 its name should begin with 'from-', and it has two additional responsibilities:
 
-```js
-function apply(params, next)
+```ts
+apply(params, next)
 {
     var chap = params.chap;
 

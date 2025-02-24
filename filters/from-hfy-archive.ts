@@ -2,7 +2,7 @@ import chalk from "chalk";
 import cheerio from "cheerio";
 import request, { type RequestCallback } from "request";
 import type { Params } from "../types/params.js";
-
+import type { FilterModule } from "../types/filter.js";
 import fs from "node:fs";
 import { uriCacheEntryExists } from "../lib/UriCache.js";
 
@@ -102,10 +102,12 @@ function handleResponse(params, body, callback) {
 	callback();
 }
 
-export function apply(params: Params, next: () => void) {
-	params.chap.id = uriToId(params.chap.src);
+export default {
+	apply(params: Params, next: () => void) {
+		params.chap.id = uriToId(params.chap.src);
 
-	get(params, () => {
-		next();
-	});
-}
+		get(params, () => {
+			next();
+		});
+	},
+} satisfies FilterModule as FilterModule;

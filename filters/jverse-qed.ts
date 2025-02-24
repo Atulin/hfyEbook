@@ -1,21 +1,24 @@
+import * as utils from "../lib/CheerioUtils.js";
 import type { Params } from "../types/params.js";
-import * as utils from "./utils.js";
 import Cheerio = cheerio.Cheerio;
 import { purge } from "../lib/Cleaners.js";
+import type { FilterModule } from "../types/filter.js";
 
-export function apply(params: Params, next: () => void) {
-	const $ = params.chap.dom;
-	const rem: Cheerio[] = [];
+export default {
+	apply(params: Params, next: () => void) {
+		const $ = params.chap.dom;
+		const rem: Cheerio[] = [];
 
-	utils.removeFirst($, rem, "p", 3);
+		utils.removeFirst($, rem, "p", 3);
 
-	$("li p").each((i, e) => {
-		const el = $(e);
+		$("li p").each((i, e) => {
+			const el = $(e);
 
-		el.parent().append(el.contents());
-		el.remove();
-	});
+			el.parent().append(el.contents());
+			el.remove();
+		});
 
-	purge(rem);
-	next();
-}
+		purge(rem);
+		next();
+	},
+} satisfies FilterModule as FilterModule;

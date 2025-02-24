@@ -1,6 +1,7 @@
 import Root = cheerio.Root;
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
+import type { FilterModule } from "../types/filter.js";
 
 function to_html($: Root, el: Cheerio, ctx: { have_text: boolean }) {
 	const cont = el.contents();
@@ -54,26 +55,28 @@ function to_html($: Root, el: Cheerio, ctx: { have_text: boolean }) {
 	return html;
 }
 
-export function apply(params: Params, next: () => void) {
-	const $ = params.chap.dom;
-	const partidx = (params.chap["sw-part-index"] ?? 0) + 1;
-	const table = $($("#pagecontent > table")[partidx]);
-	const trs = table.children();
-	const c_row = $(trs[trs.length > 4 ? 2 : 1]);
-	const content = $($($(c_row.children()[1]).find("td")[0]).find("div")[0]);
+export default {
+	apply(params: Params, next: () => void) {
+		const $ = params.chap.dom;
+		const partidx = (params.chap["sw-part-index"] ?? 0) + 1;
+		const table = $($("#pagecontent > table")[partidx]);
+		const trs = table.children();
+		const c_row = $(trs[trs.length > 4 ? 2 : 1]);
+		const content = $($($(c_row.children()[1]).find("td")[0]).find("div")[0]);
 
-	$($.root().contents()).remove();
+		$($.root().contents()).remove();
 
-	let html = "<p>\n";
-	const ctx = {
-		have_text: false,
-	};
+		let html = "<p>\n";
+		const ctx = {
+			have_text: false,
+		};
 
-	html += to_html($, content, ctx);
-	html += "</p>\n";
+		html += to_html($, content, ctx);
+		html += "</p>\n";
 
-	$.root().append($.parseHTML(html));
+		$.root().append($.parseHTML(html));
 
-	params.chap.id += `-p${partidx}`;
-	next();
-}
+		params.chap.id += `-p${partidx}`;
+		next();
+	},
+} satisfies FilterModule as FilterModule;

@@ -4,6 +4,7 @@ import Cheerio = cheerio.Cheerio;
 import { unescapeHtml } from "../lib/Cleaners.js";
 import Root = cheerio.Root;
 import { join } from "node:path";
+import type { FilterModule } from "../types/filter.js";
 
 const output = Bun.env.OUTPUT ?? "output";
 
@@ -88,124 +89,126 @@ function tolatex(p: Params, $: Root, e: Cheerio) {
 	return latex;
 }
 
-export function apply(params: Params, next: () => void) {
-	const spec = params.spec;
-	const oname = join(output, `${spec.filename}.tex`);
-	const title = l_esc(spec.title);
-	const creator = l_esc(spec.creator);
-	const n_re = /\n/g;
-	const d_str = new Date().toLocaleDateString("en-GB", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-		hour: "numeric",
-		minute: "numeric",
-		timeZoneName: "short",
-		timeZone: "UTC",
-	});
+export default {
+	apply(params: Params, next: () => void) {
+		const spec = params.spec;
+		const oname = join(output, `${spec.filename}.tex`);
+		const title = l_esc(spec.title);
+		const creator = l_esc(spec.creator);
+		const n_re = /\n/g;
+		const d_str = new Date().toLocaleDateString("en-GB", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+			hour: "numeric",
+			minute: "numeric",
+			timeZoneName: "short",
+			timeZone: "UTC",
+		});
 
-	let latex = [
-		"\\documentclass[a4paper,10pt]{article}",
-		"",
-		"\\usepackage{fontspec}",
-		"\\usepackage[normalem]{ulem}",
-		"\\usepackage{tocloft}",
-		"\\usepackage{hyperref}",
-		"\\usepackage{csquotes}",
-		"\\usepackage{microtype}",
-		"\\usepackage{needspace}",
-		"\\usepackage{ifthen}",
-		"",
-		`\\title{\\textsc{${title.replace(n_re, "\\\\\n")}}}`,
-		`\\author{\\textsc{By ${creator}}${
-			spec.patreon
-				? `\\\\ \\small{Donate securely to the author at \\href{${l_esc(spec.patreon)}}{Patreon}}`
-				: ""
-		}}`,
-		"\\date{}",
-		"",
-		"\\hypersetup{",
-		`  pdftitle = {${title.replace(n_re, " - ")}},`,
-		`  pdfauthor = {${spec.creator}},`,
-		"  pdfproducer = {EbookJS},",
-		"  colorlinks = true,",
-		"  linkcolor = [rgb]{0.09,0.15,0.588},",
-		"  urlcolor = [rgb]{0.09,0.15,0.588},",
-		"  pdfborder = {0 0 0}",
-		"}",
-		"",
-		"\\setlength{\\parskip}{\\baselineskip}",
-		"\\setlength{\\parindent}{0pt}",
-		"\\linespread{1.2}",
-		"\\raggedright",
-		"\\defaultfontfeatures{Ligatures=TeX}",
-		"\\setmainfont[",
-		"	Path = ../templates/,",
-		"	Extension = .otf,",
-		"	Ligatures = TeX,",
-		"	BoldFont = LinLibertine-RB,",
-		"	ItalicFont = LinLibertine-RI,",
-		"	BoldItalicFont = LinLibertine-RBI",
-		"]{LinLibertine-R}",
-		"\\setmonofont[",
-		"	Path = ../templates/,",
-		"	Scale = 0.85,",
-		"	Extension = .ttf,",
-		"	Ligatures = TeX,",
-		"	BoldFont = LiberationMono-Bold,",
-		"	ItalicFont = LiberationMono-Italic,",
-		"	BoldItalicFont = LiberationMono-BoldItalic",
-		"]{LiberationMono-Regular}",
-		"",
-		"\\def\\asterism{\\par\\begin{center}\\vspace{-1em}\\huge{$\\cdots$}\\end{center}}",
-		"",
-		"\\newcommand{\\monosp}[1]{\\texttt{{#1}}\\vspace{5mm}}",
-		"\\renewcommand{\\cftsecfont}{\\normalfont}",
-		"\\renewcommand{\\cftsecpagefont}{\\normalfont}",
-		"\\renewcommand{\\cftsecpresnum}{\\begin{lrbox}{\\@tempboxa}}",
-		"\\renewcommand{\\cftsecaftersnum}{\\end{lrbox}}",
-		"\\renewcommand{\\cftsecleader}{\\cftdotfill{\\cftdotsep}}",
-		"\\renewcommand{\\contentsname}{\\textsc{Contents}\\linebreak}",
-		"\\setcounter{secnumdepth}{-2}",
-		"",
-		"\\begin{document}",
-		"\\pagestyle{plain}",
-		"",
-		"\\addcontentsline{toc}{section}{\\protect{\\textsc{Title}}}",
-		"\\sectionmark{Title}",
-		"\\maketitle",
-		"\\thispagestyle{empty}",
-		"\\vfill",
-		`\\begin{center}\\textsc{Automatically typeset in\\\\Linux Libertine and Liberation Mono\\\\Using EbookJS on ${d_str}}\\end{center}`,
-		"",
-		"\\clearpage",
-		"\\pagenumbering{Roman}",
-		"\\tableofcontents",
-		"",
-		"\\clearpage",
-		"\\newcounter{storedpage}",
-		"\\setcounter{storedpage}{\\value{page}}",
-		"\\pagenumbering{arabic}",
-		"\\setcounter{page}{\\value{storedpage}}",
-	].join("\n");
+		let latex = [
+			"\\documentclass[a4paper,10pt]{article}",
+			"",
+			"\\usepackage{fontspec}",
+			"\\usepackage[normalem]{ulem}",
+			"\\usepackage{tocloft}",
+			"\\usepackage{hyperref}",
+			"\\usepackage{csquotes}",
+			"\\usepackage{microtype}",
+			"\\usepackage{needspace}",
+			"\\usepackage{ifthen}",
+			"",
+			`\\title{\\textsc{${title.replace(n_re, "\\\\\n")}}}`,
+			`\\author{\\textsc{By ${creator}}${
+				spec.patreon
+					? `\\\\ \\small{Donate securely to the author at \\href{${l_esc(spec.patreon)}}{Patreon}}`
+					: ""
+			}}`,
+			"\\date{}",
+			"",
+			"\\hypersetup{",
+			`  pdftitle = {${title.replace(n_re, " - ")}},`,
+			`  pdfauthor = {${spec.creator}},`,
+			"  pdfproducer = {EbookJS},",
+			"  colorlinks = true,",
+			"  linkcolor = [rgb]{0.09,0.15,0.588},",
+			"  urlcolor = [rgb]{0.09,0.15,0.588},",
+			"  pdfborder = {0 0 0}",
+			"}",
+			"",
+			"\\setlength{\\parskip}{\\baselineskip}",
+			"\\setlength{\\parindent}{0pt}",
+			"\\linespread{1.2}",
+			"\\raggedright",
+			"\\defaultfontfeatures{Ligatures=TeX}",
+			"\\setmainfont[",
+			"	Path = ../templates/,",
+			"	Extension = .otf,",
+			"	Ligatures = TeX,",
+			"	BoldFont = LinLibertine-RB,",
+			"	ItalicFont = LinLibertine-RI,",
+			"	BoldItalicFont = LinLibertine-RBI",
+			"]{LinLibertine-R}",
+			"\\setmonofont[",
+			"	Path = ../templates/,",
+			"	Scale = 0.85,",
+			"	Extension = .ttf,",
+			"	Ligatures = TeX,",
+			"	BoldFont = LiberationMono-Bold,",
+			"	ItalicFont = LiberationMono-Italic,",
+			"	BoldItalicFont = LiberationMono-BoldItalic",
+			"]{LiberationMono-Regular}",
+			"",
+			"\\def\\asterism{\\par\\begin{center}\\vspace{-1em}\\huge{$\\cdots$}\\end{center}}",
+			"",
+			"\\newcommand{\\monosp}[1]{\\texttt{{#1}}\\vspace{5mm}}",
+			"\\renewcommand{\\cftsecfont}{\\normalfont}",
+			"\\renewcommand{\\cftsecpagefont}{\\normalfont}",
+			"\\renewcommand{\\cftsecpresnum}{\\begin{lrbox}{\\@tempboxa}}",
+			"\\renewcommand{\\cftsecaftersnum}{\\end{lrbox}}",
+			"\\renewcommand{\\cftsecleader}{\\cftdotfill{\\cftdotsep}}",
+			"\\renewcommand{\\contentsname}{\\textsc{Contents}\\linebreak}",
+			"\\setcounter{secnumdepth}{-2}",
+			"",
+			"\\begin{document}",
+			"\\pagestyle{plain}",
+			"",
+			"\\addcontentsline{toc}{section}{\\protect{\\textsc{Title}}}",
+			"\\sectionmark{Title}",
+			"\\maketitle",
+			"\\thispagestyle{empty}",
+			"\\vfill",
+			`\\begin{center}\\textsc{Automatically typeset in\\\\Linux Libertine and Liberation Mono\\\\Using EbookJS on ${d_str}}\\end{center}`,
+			"",
+			"\\clearpage",
+			"\\pagenumbering{Roman}",
+			"\\tableofcontents",
+			"",
+			"\\clearpage",
+			"\\newcounter{storedpage}",
+			"\\setcounter{storedpage}{\\value{page}}",
+			"\\pagenumbering{arabic}",
+			"\\setcounter{page}{\\value{storedpage}}",
+		].join("\n");
 
-	console.log(`Building ${oname}`);
+		console.log(`Building ${oname}`);
 
-	for (let i = 0; i < spec.contents.length; i++) {
-		const chap = spec.contents[i];
-		const c_title = l_esc(chap.title);
+		for (let i = 0; i < spec.contents.length; i++) {
+			const chap = spec.contents[i];
+			const c_title = l_esc(chap.title);
 
-		latex += `\n\\clearpage\n\\section{\\textsc{${c_title}}}\n`;
+			latex += `\n\\clearpage\n\\section{\\textsc{${c_title}}}\n`;
 
-		if (chap.byline) {
-			latex += `\\vspace{-2em}\\textsc{By ${l_esc(chap.byline)}}\\vspace{1em}\\\\*\n`;
+			if (chap.byline) {
+				latex += `\\vspace{-2em}\\textsc{By ${l_esc(chap.byline)}}\\vspace{1em}\\\\*\n`;
+			}
+
+			latex += tolatex(params, chap.dom, chap.dom.root());
 		}
 
-		latex += tolatex(params, chap.dom, chap.dom.root());
-	}
+		latex += "\\end{document}";
 
-	latex += "\\end{document}";
-
-	fs.writeFileSync(oname, latex, "utf-8");
-	next();
-}
+		fs.writeFileSync(oname, latex, "utf-8");
+		next();
+	},
+} satisfies FilterModule as FilterModule;

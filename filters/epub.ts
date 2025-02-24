@@ -3,7 +3,8 @@ import { join } from "node:path";
 import dedent from "dedent";
 import uuid from "node-uuid";
 import type { Params } from "../types/params.js";
-import type { Contents, InternalContents, InternalSpec, Spec } from "../types/spec.js";
+import type { InternalContents, InternalSpec } from "../types/spec.js";
+import type { FilterModule } from "../types/filter.js";
 
 // NOTES:
 // FBReader does not support text strikethrough (tags: s, del, strike)
@@ -159,41 +160,43 @@ function createCover(params: Params) {
 	return `${html}    </body>\n</html>`;
 }
 
-export function apply(params: Params, next: () => void) {
-	const spec = params.spec;
-	const uid = uuid.v4();
-	const zip = require("node-zip")();
-	const oname = join(output, `${spec.filename}.epub`);
+export default {
+	apply(params: Params, next: () => void) {
+		const spec = params.spec;
+		const uid = uuid.v4();
+		const zip = require("node-zip")();
+		const oname = join(output, `${spec.filename}.epub`);
 
-	console.log(`Building ${oname}`);
+		console.log(`Building ${oname}`);
 
-	zip.file("mimetype", "application/epub+zip", { compression: "STORE" });
-	zip.folder("META-INF");
-	zip.folder("OEBPS");
-	zip.file(
-		"META-INF/container.xml",
-		'<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>',
-		{ compression: "DEFLATE" },
-	);
-	zip.file("OEBPS/toc.ncx", createTOC(spec, uid), { compression: "DEFLATE" });
-	zip.file("OEBPS/content.opf", createContents(spec, uid), {
-		compression: "DEFLATE",
-	});
-	zip.file("OEBPS/style.css", fs.readFileSync("templates/style.css", "utf-8"), {
-		compression: "DEFLATE",
-	});
-	zip.file("OEBPS/cover.xhtml", createCover(params), {
-		compression: "DEFLATE",
-	});
-
-	for (let ci = 0; ci < spec.contents.length; ci++) {
-		const chap = spec.contents[ci];
-
-		zip.file(`OEBPS/${chap.id}.xhtml`, createXHTML(params, chap), {
+		zip.file("mimetype", "application/epub+zip", { compression: "STORE" });
+		zip.folder("META-INF");
+		zip.folder("OEBPS");
+		zip.file(
+			"META-INF/container.xml",
+			'<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>',
+			{ compression: "DEFLATE" },
+		);
+		zip.file("OEBPS/toc.ncx", createTOC(spec, uid), { compression: "DEFLATE" });
+		zip.file("OEBPS/content.opf", createContents(spec, uid), {
 			compression: "DEFLATE",
 		});
-	}
+		zip.file("OEBPS/style.css", fs.readFileSync("templates/style.css", "utf-8"), {
+			compression: "DEFLATE",
+		});
+		zip.file("OEBPS/cover.xhtml", createCover(params), {
+			compression: "DEFLATE",
+		});
 
-	fs.writeFileSync(oname, zip.generate({ base64: false }), "binary");
-	next();
-}
+		for (let ci = 0; ci < spec.contents.length; ci++) {
+			const chap = spec.contents[ci];
+
+			zip.file(`OEBPS/${chap.id}.xhtml`, createXHTML(params, chap), {
+				compression: "DEFLATE",
+			});
+		}
+
+		fs.writeFileSync(oname, zip.generate({ base64: false }), "binary");
+		next();
+	},
+} satisfies FilterModule as FilterModule;

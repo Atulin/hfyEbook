@@ -2,55 +2,59 @@
 // this filter attempts to correct these anomalies before final output processing.
 
 import { decodeCrs } from "../lib/Cleaners.js";
+import type { FilterModule } from "../types/filter.js";
 import type { Params } from "../types/params.js";
 
-// It should always be used as the final stage.
-export function apply(params: Params, next: () => void) {
-	const $ = params.chap.dom;
+// It should always be used as the final stage.import type { FilterModule } from "../types/filter.js";
 
-	// Remove any empty paragraphs
-	$("p").each((i, e) => {
-		const p = $(e);
+export default {
+	apply(params: Params, next: () => void) {
+		const $ = params.chap.dom;
 
-		if (p.contents().length === 1) {
-			const cr = p.contents()[0];
+		// Remove any empty paragraphs
+		$("p").each((i, e) => {
+			const p = $(e);
 
-			if (cr.type === "text" && cr.data) {
-				if (decodeCrs(cr.data).trim() === "") {
-					p.remove();
+			if (p.contents().length === 1) {
+				const cr = p.contents()[0];
+
+				if (cr.type === "text" && cr.data) {
+					if (decodeCrs(cr.data).trim() === "") {
+						p.remove();
+					}
 				}
 			}
-		}
-	});
+		});
 
-	// Removal of DOM elements tends to leave surrounding
-	// newline text nodes, resulting in large gaps in the root.
-	const newl = /^\n*$/;
-	let roots = $.root().contents();
-	let rem = true;
+		// Removal of DOM elements tends to leave surrounding
+		// newline text nodes, resulting in large gaps in the root.
+		const newl = /^\n*$/;
+		let roots = $.root().contents();
+		let rem = true;
 
-	for (let i = 0; i < roots.length; i++) {
-		const r = roots[i];
+		for (let i = 0; i < roots.length; i++) {
+			const r = roots[i];
 
-		if (r.type === "text" && r.data && r.data.search(newl) > -1) {
-			if (rem) {
-				$(r).remove();
+			if (r.type === "text" && r.data && r.data.search(newl) > -1) {
+				if (rem) {
+					$(r).remove();
+				}
+
+				rem = true;
+			} else {
+				rem = false;
 			}
-
-			rem = true;
-		} else {
-			rem = false;
 		}
-	}
 
-	// That may leave a single trailing newline
-	roots = $.root().contents();
+		// That may leave a single trailing newline
+		roots = $.root().contents();
 
-	const last = roots[roots.length - 1];
+		const last = roots[roots.length - 1];
 
-	if (last.type === "text" && last.data && last.data.search(newl) > -1) {
-		$(last).remove();
-	}
+		if (last.type === "text" && last.data && last.data.search(newl) > -1) {
+			$(last).remove();
+		}
 
-	next();
-}
+		next();
+	},
+} satisfies FilterModule as FilterModule;

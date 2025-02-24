@@ -3,6 +3,7 @@ import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
 import Element = cheerio.Element;
 import { omit } from "es-toolkit";
+import type { FilterModule } from "../types/filter.js";
 
 function removeComments($: Root, el: Cheerio) {
 	$(el)
@@ -38,34 +39,36 @@ function fixMonoEntities($: Root) {
 	$("code > pre").each(replaceAmps);
 }
 
-export function apply(params: Params, next: () => void) {
-	const $ = params.chap.dom;
+export default {
+	apply(params: Params, next: () => void) {
+		const $ = params.chap.dom;
 
-	// Remove all comments
-	removeComments($, $.root());
+		// Remove all comments
+		removeComments($, $.root());
 
-	// Remove all links that are not external
-	$("a").each((i, e) => {
-		const el = e as cheerio.TagElement;
-		if (el.attribs?.href) {
-			if (
-				el.attribs.href.startsWith("http://www.reddit.com") ||
-				el.attribs.href.startsWith("https://www.reddit.com")
-			) {
-				el.name = "span";
-				el.attribs = {};
+		// Remove all links that are not external
+		$("a").each((i, e) => {
+			const el = e as cheerio.TagElement;
+			if (el.attribs?.href) {
+				if (
+					el.attribs.href.startsWith("http://www.reddit.com") ||
+					el.attribs.href.startsWith("https://www.reddit.com")
+				) {
+					el.name = "span";
+					el.attribs = {};
+				}
 			}
-		}
-	});
+		});
 
-	// Remove all classes and ids
-	$("*").each((i, e) => {
-		const el = e as cheerio.TagElement;
-		if (el.attribs) {
-			el.attribs = omit(el.attribs, ["class", "id"]);
-		}
-	});
+		// Remove all classes and ids
+		$("*").each((i, e) => {
+			const el = e as cheerio.TagElement;
+			if (el.attribs) {
+				el.attribs = omit(el.attribs, ["class", "id"]);
+			}
+		});
 
-	fixMonoEntities($);
-	next();
-}
+		fixMonoEntities($);
+		next();
+	},
+} satisfies FilterModule as FilterModule;

@@ -1,6 +1,7 @@
 import Root = cheerio.Root;
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
+import type { FilterModule } from "../types/filter.js";
 
 function filter_txt(txt: string) {
 	return txt.replace(/\n/g, "\\n");
@@ -24,9 +25,11 @@ function display($: Root, indent: string, root: Cheerio) {
 	}
 }
 
-export function apply(params: Params, next: () => void) {
-	const $ = params.chap.dom;
+export default {
+	apply(params: Params, next: () => void) {
+		const $ = params.chap.dom;
 
-	display($, "", $.root());
-	next();
-}
+		display($, "", $.root());
+		next();
+	},
+} satisfies FilterModule as FilterModule;

@@ -3,6 +3,7 @@ import Cheerio = cheerio.Cheerio;
 import { purge } from "../lib/Cleaners.js";
 import Root = cheerio.Root;
 import Element = cheerio.Element;
+import type { FilterModule } from "../types/filter.js";
 
 function processText($: Root, fn: (c: Element) => void) {
 	$("p").each((_, e) => {
@@ -18,50 +19,54 @@ function processText($: Root, fn: (c: Element) => void) {
 	});
 }
 
-export function apply(params: Params, next: () => void) {
-	const chap = params.chap;
-	const $ = chap.dom;
+export default {
+	apply(params: Params, next: () => void) {
+		const chap = params.chap;
+		const $ = chap.dom;
 
-	if (chap.title === "Dark Heart") {
-		processText($, (c: Element) => {
-			if (c.data?.charCodeAt(0) === 0x2003) {
-				c.data = c.data?.slice(2, c.data?.length);
-			}
-		});
-	} else if (["Positions of Power", "Prisoners", "Center of attention"].includes(chap.title)) {
-		processText($, (c) => {
-			if (c.data && c.data?.indexOf("*") > -1) {
-				c.data = c.data?.replace(/\*/, "");
-			}
-		});
-	}
-
-	const rem: Cheerio[] = [];
-	const ps = $("p");
-	const prune_chapter = [
-		"The Fittest",
-		"The Rabbit Hole",
-		"Solve for X-plosion",
-		"Going Without",
-		"Lost Futures",
-	].includes(chap.title);
-
-	if (prune_chapter) {
-		for (let i = 0; i < 2; i++) {
-			rem.push($(ps[i]));
+		if (chap.title === "Dark Heart") {
+			processText($, (c: Element) => {
+				if (c.data?.charCodeAt(0) === 0x2003) {
+					c.data = c.data?.slice(2, c.data?.length);
+				}
+			});
+		} else if (
+			["Positions of Power", "Prisoners", "Center of attention"].includes(chap.title)
+		) {
+			processText($, (c) => {
+				if (c.data && c.data?.indexOf("*") > -1) {
+					c.data = c.data?.replace(/\*/, "");
+				}
+			});
 		}
-	}
 
-	const fp = $(ps[ps.length - 1]);
+		const rem: Cheerio[] = [];
+		const ps = $("p");
+		const prune_chapter = [
+			"The Fittest",
+			"The Rabbit Hole",
+			"Solve for X-plosion",
+			"Going Without",
+			"Lost Futures",
+		].includes(chap.title);
 
-	if (
-		fp.text() === "END OF CHAPTER" ||
-		fp.text() === "End of Chapter" ||
-		fp.text() === "Chapter End"
-	) {
-		rem.push(fp);
-	}
+		if (prune_chapter) {
+			for (let i = 0; i < 2; i++) {
+				rem.push($(ps[i]));
+			}
+		}
 
-	purge(rem);
-	next();
-}
+		const fp = $(ps[ps.length - 1]);
+
+		if (
+			fp.text() === "END OF CHAPTER" ||
+			fp.text() === "End of Chapter" ||
+			fp.text() === "Chapter End"
+		) {
+			rem.push(fp);
+		}
+
+		purge(rem);
+		next();
+	},
+} satisfies FilterModule as FilterModule;

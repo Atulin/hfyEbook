@@ -4,6 +4,7 @@ import cheerio from "cheerio";
 import request from "request";
 import { addUriCacheEntry, uriCacheEntryExists } from "../lib/UriCache.js";
 import type { Params } from "../types/params.js";
+import type { FilterModule } from "../types/filter.js";
 
 function uriToId(uri: string) {
 	return decodeURI(uri.replace(/http:\/\/|www\.|[\?=&#%]/g, "").replace(/[\.\/]/g, "_"));
@@ -44,10 +45,12 @@ function get(params: Params, callback: () => void) {
 	);
 }
 
-export function apply(params: Params, next: () => void) {
-	params.chap.id = uriToId(params.chap.src);
+export default {
+	apply(params: Params, next: () => void) {
+		params.chap.id = uriToId(params.chap.src);
 
-	get(params, () => {
-		next();
-	});
-}
+		get(params, () => {
+			next();
+		});
+	},
+} satisfies FilterModule as FilterModule;

@@ -1,6 +1,6 @@
 import Root = cheerio.Root;
 import Cheerio = cheerio.Cheerio;
-import type { Contents } from "../types/spec.js";
+import type { Contents, InternalContents } from "../types/spec.js";
 
 export function removeFirst($: Root, coll: Cheerio[], selector: string, count: number) {
 	const elems = $(selector);
@@ -45,7 +45,7 @@ export function removeMatching($: Root, coll: Cheerio[], selector: string, regex
 }
 
 export function pruneParagraphs(
-	chap: Contents,
+	chap: InternalContents,
 	coll: Cheerio[],
 	params: { [key: string]: [number, number, string[]] | [number, number] },
 ) {

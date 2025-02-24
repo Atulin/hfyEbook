@@ -1,14 +1,12 @@
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import chalk from "chalk";
 import * as cheerio from "cheerio";
 import { getFilter } from "./lib/FilterManager.js";
 import { ensureDir } from "./lib/Helpers.js";
 import { selectSpec } from "./lib/SpecSelector.js";
 import type { Params } from "./types/params.js";
 import { type Contents, type InternalSpec, type Spec, SpecSchema } from "./types/spec.js";
-
-const ERROR_TAG = `${chalk.red("Error")}: `;
+import { log } from "./lib/Logger.js";
 
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
 await ensureDir("cache");
@@ -48,8 +46,8 @@ function Finalize(params: Params) {
 
 			Sequence(ops, params);
 		} else {
-			console.log(
-				`${ERROR_TAG}Unable to interpret the output filter reference. It must be either a string or array of strings.`,
+			log.err(
+				"Unable to interpret the output filter reference. It must be either a string or array of strings.",
 			);
 		}
 	}
@@ -63,7 +61,8 @@ function Sequence(
 	cb: SequenceCb = null,
 ) {
 	if (ops.length < 2) {
-		throw `${ERROR_TAG}Cannot create a sequence of less than two operations.`;
+		log.err("Cannot create a sequence of less than two operations.");
+		process.exit(1);
 	}
 
 	let last = ((params, cb) => () => {
@@ -88,7 +87,7 @@ const json = await Bun.file(join(import.meta.dir, "specs", selectedSpec)).json()
 const { data, success, error } = SpecSchema.safeParse(json);
 
 if (!success) {
-	console.log(`${ERROR_TAG}Spec is invalid: ${error.message}`);
+	log.err(`Spec is invalid: ${error.message}`);
 	process.exit(1);
 }
 
@@ -96,6 +95,8 @@ const sched: { [key: string]: [((params: Params, next: () => void) => void)[], P
 
 const spec = data as InternalSpec;
 spec.loaded = 0;
+
+log.dbg(`Spec has ${spec.filters.length} filters\n${Bun.inspect(spec.filters)}`);
 
 for (let i = 0; i < spec.contents.length; i++) {
 	const chap = spec.contents[i];
@@ -106,12 +107,12 @@ for (let i = 0; i < spec.contents.length; i++) {
 	};
 
 	if (typeof chap.title !== "string") {
-		console.log(`${ERROR_TAG}Each chapter must contain a "title" property (string).`);
+		log.err(`Each chapter must contain a "title" property (string).`);
 		process.exit(1);
 	}
 
 	if (typeof chap.src !== "string") {
-		console.log(`${ERROR_TAG}Each chapter must contain a "src" property (string).`);
+		log.err(`Each chapter must contain a "src" property (string).`);
 		process.exit(1);
 	}
 
@@ -128,29 +129,25 @@ for (let i = 0; i < spec.contents.length; i++) {
 		}
 	} else if (filter_type === "[object Object]") {
 		if (typeof chap.filters !== "string") {
-			console.log(
-				`${ERROR_TAG}In "${chap.title}": When a collection of filters is specified, each chapter must also specify witch filter chain to use.`,
+			log.err(
+				`In "${chap.title}": When a collection of filters is specified, each chapter must also specify witch filter chain to use.`,
 			);
 			process.exit(1);
 		}
 
-		const f = spec.filters as { [key: string]: string[] };
-
-		if (!(chap.filters in f)) {
-			console.log(
-				`${ERROR_TAG}In "${chap.title}"; Cannot resolve the filter chain "${chap.filters}".`,
-			);
+		if (!(chap.filters in spec.filters)) {
+			log.err(`In "${chap.title}"; Cannot resolve the filter chain "${chap.filters}".`);
 			process.exit(1);
 		}
 
-		const filters = f[chap.filters] ?? [];
+		const filters = spec.filters[chap.filters] ?? [];
 
 		for (const filter of filters) {
 			const fn = getFilter(filter);
 			ops.push(fn);
 		}
 	} else {
-		console.log(`${ERROR_TAG}Unsupported filter chain type "${filter_type}".`);
+		log.err(`Unsupported filter chain type "${filter_type}".`);
 		process.exit(1);
 	}
 
