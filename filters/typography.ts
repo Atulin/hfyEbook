@@ -1,5 +1,6 @@
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
+import { purge } from "../lib/Cleaners.js";
 import Element = cheerio.Element;
 
 const ENT_LQUOT = "&#x201C;";
@@ -143,6 +144,6 @@ export function apply(params: Params, next: () => void) {
 		}
 	});
 
-	params.purge(rem);
+	purge(rem);
 	next();
 }

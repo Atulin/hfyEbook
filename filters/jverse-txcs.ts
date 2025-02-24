@@ -1,4 +1,5 @@
 import Cheerio = cheerio.Cheerio;
+import { purge } from "../lib/Cleaners.js";
 import type { Params } from "../types/params.js";
 
 export function apply(params: Params, next: () => void) {
@@ -23,6 +24,6 @@ export function apply(params: Params, next: () => void) {
 		rem.push(lp);
 	}
 
-	params.purge(rem);
+	purge(rem);
 	next();
 }

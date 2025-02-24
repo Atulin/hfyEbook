@@ -4,6 +4,7 @@ import request, { type RequestCallback } from "request";
 import type { Params } from "../types/params.js";
 
 import fs from "node:fs";
+import { uriCacheEntryExists } from "../lib/UriCache.js";
 
 function uriToId(uri: string) {
 	const tokens = uri.split("/");
@@ -12,7 +13,7 @@ function uriToId(uri: string) {
 }
 
 function get(params: Params, callback: () => void) {
-	if (params.uri_cache.cache.indexOf(params.chap.id) > -1) {
+	if (uriCacheEntryExists(params.chap.id)) {
 		console.log(`${chalk.green("Cached")} ${params.chap.id}`);
 		params.chap.dom = cheerio.load(
 			fs.readFileSync(`${import.meta.dir}/../cache/${params.chap.id}`, {

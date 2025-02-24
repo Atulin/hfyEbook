@@ -3,13 +3,14 @@ import chalk from "chalk";
 import cheerio from "cheerio";
 import request from "request";
 import type { Params } from "../types/params.js";
+import { addUriCacheEntry, uriCacheEntryExists } from "../lib/UriCache.js";
 
 function uriToId(uri: string) {
 	return decodeURI(uri.replace(/http:\/\/|www\.|[\?=&#%]/g, "").replace(/[\.\/]/g, "_"));
 }
 
 function get(params: Params, callback: () => void) {
-	if (params.uri_cache.cache.indexOf(params.chap.id) > -1) {
+	if (uriCacheEntryExists(params.chap.id)) {
 		console.log(`${chalk.green("Cached")} ${params.chap.id}`);
 		params.chap.dom = cheerio.load(
 			fs.readFileSync(`${import.meta.dir}/../cache/${params.chap.id}`, {
@@ -32,11 +33,11 @@ function get(params: Params, callback: () => void) {
 
 			console.log(`${chalk.yellow("Fetched")} ${params.chap.id}`);
 
-			params.uri_cache.cache.push(params.chap.id);
 			params.chap.dom = cheerio.load(body, params.cheerio_flags);
 			fs.writeFileSync(`${import.meta.dir}/../cache/${params.chap.id}`, body, {
 				encoding: "utf8",
 			});
+			addUriCacheEntry(params.chap.id);
 
 			callback();
 		})(params, callback),

@@ -1,21 +1,32 @@
-import fs from "node:fs";
+import { Glob } from "bun";
 import { dirname, join } from "node:path";
+import { filename } from "./Helpers.js";
 
-export class UriCache {
-	public cache: string[];
+let uriCache: string[] | undefined;
 
-	private constructor(cache: string[]) {
-		this.cache = cache;
+const init = () => {
+	const cache: string[] = [];
+	const glob = new Glob(join(dirname(Bun.main), "cache", "*"));
+
+	for (const file of glob.scanSync()) {
+		cache.push(filename(file));
 	}
 
-	public static new() {
-		const cache = [];
-		const files = fs.readdirSync(join(dirname(Bun.main), "cache"));
+	return cache;
+};
 
-		for (let i = 0; i < files.length; i++) {
-			cache.push(files[i]);
-		}
-
-		return new UriCache(cache);
+export const uriCacheEntryExists = (uri: string) => {
+	if (!uriCache) {
+		uriCache = init();
 	}
-}
+
+	return uriCache.indexOf(uri) > -1;
+};
+
+export const addUriCacheEntry = (uri: string) => {
+	if (!uriCache) {
+		uriCache = init();
+	}
+
+	uriCache.push(filename(uri));
+};

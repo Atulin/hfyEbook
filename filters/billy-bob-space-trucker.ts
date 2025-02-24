@@ -1,6 +1,7 @@
 import type { Params } from "../types/params.js";
 import * as utils from "./utils.js";
 import Cheerio = cheerio.Cheerio;
+import { purge } from "../lib/Cleaners.js";
 
 export function apply(params: Params, next: () => void) {
 	const chap = params.chap;
@@ -50,6 +51,6 @@ export function apply(params: Params, next: () => void) {
 		"Trente-Cinq deuxième partie": [1, 0],
 	});
 
-	params.purge(rem);
+	purge(rem);
 	next();
 }

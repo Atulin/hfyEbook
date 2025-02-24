@@ -1,41 +1,39 @@
-import fs from "node:fs";
 import { dirname, join } from "node:path";
 import chalk from "chalk";
-import type { Params } from "../types/params.js";
+import { filename } from "./Helpers.js";
+import { Glob } from "bun";
+import { FilterModuleSchema, type FilterFunction } from "../types/filter.js";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
 
-export type Filters = { [key: string]: { apply: (params: Params, next: () => void) => void } };
+export type Filters = Record<string, FilterFunction>;
 
-export class FilterManager {
-	private filters: Filters = {};
+let filterCache: Filters | undefined;
 
-	private constructor(filters: Filters) {
-		this.filters = filters;
-	}
+const init = () => {
+	const filters: Filters = {};
+	const glob = new Glob(join(dirname(Bun.main), "filters", "*.ts"));
 
-	public static new() {
-		const files = fs.readdirSync(join(dirname(Bun.main), "filters"));
+	for (const file of glob.scanSync()) {
+		const fid = filename(file);
 
-		const filters: Filters = {};
-		for (let i = 0; i < files.length; i++) {
-			const fname = files[i];
-			const fid = fname.slice(0, fname.length - 3);
+		const { success, error, data } = FilterModuleSchema.safeParse(require(file));
 
-			filters[fid] = require(`../filters/${fname}`);
+		if (!success) {
+			console.log(`${ERROR_TAG}Filter ${fid} is invalid: ${error.message}`);
+			continue;
 		}
 
-		return new FilterManager(filters);
+		filters[fid] = data.apply;
 	}
 
-	public get(fid: string) {
-		const filter = this.filters[fid];
+	return filters;
+};
 
-		if (!filter) {
-			console.log(`${ERROR_TAG}No such filter: ${fid}`);
-			process.exit();
-		}
-
-		return filter.apply;
+export const getFilter = (name: string) => {
+	if (!filterCache) {
+		filterCache = init();
 	}
-}
+
+	return filterCache[name];
+};

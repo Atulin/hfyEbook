@@ -1,6 +1,7 @@
 // The actions of other filters can leave the DOM in an undesirable state,
 // this filter attempts to correct these anomalies before final output processing.
 
+import { decodeCrs } from "../lib/Cleaners.js";
 import type { Params } from "../types/params.js";
 
 // It should always be used as the final stage.
@@ -15,7 +16,7 @@ export function apply(params: Params, next: () => void) {
 			const cr = p.contents()[0];
 
 			if (cr.type === "text" && cr.data) {
-				if (params.decode_crs(cr.data).trim() === "") {
+				if (decodeCrs(cr.data).trim() === "") {
 					p.remove();
 				}
 			}

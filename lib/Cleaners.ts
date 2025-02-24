@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import Cheerio = cheerio.Cheerio;
 
-export const decode_cr = (cr: string) => {
+export const decodeCr = (cr: string) => {
 	const isHex = cr[2] === "x";
 
 	const start = isHex ? 3 : 2;
@@ -10,13 +10,13 @@ export const decode_cr = (cr: string) => {
 };
 
 /// Decode all HTML character references to unicode.
-export const decode_crs = (s: string) => {
+export const decodeCrs = (s: string) => {
 	let ls = s;
 	let i = ls.search(/&#.*;/);
 
 	while (i > -1) {
 		const ni = ls.indexOf(";", i);
-		ls = ls.slice(0, i) + decode_cr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
+		ls = ls.slice(0, i) + decodeCr(ls.slice(i, ni + 1)) + ls.slice(ni + 1);
 
 		i = ls.search(/&#.*;/);
 	}
@@ -24,8 +24,8 @@ export const decode_crs = (s: string) => {
 	return ls;
 };
 
-export const unescape_html = (html: string) => {
-	return decode_crs(html.replace(/&amp;/g, "&"))
+export const unescapeHtml = (html: string) => {
+	return decodeCrs(html.replace(/&amp;/g, "&"))
 		.replace(/&quot;/g, '"')
 		.replace(/&apos;/g, "'")
 		.replace(/&nbsp;/g, " ")

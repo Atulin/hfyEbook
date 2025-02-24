@@ -1,6 +1,7 @@
 import type { Params } from "../types/params.js";
 import * as utils from "./utils.js";
 import Cheerio = cheerio.Cheerio;
+import { purge } from "../lib/Cleaners.js";
 
 export function apply(params: Params, next: () => void) {
 	const $ = params.chap.dom;
@@ -15,6 +16,6 @@ export function apply(params: Params, next: () => void) {
 		el.remove();
 	});
 
-	params.purge(rem);
+	purge(rem);
 	next();
 }

@@ -5,6 +5,7 @@ import * as cheerio from "cheerio";
 import { marked } from "marked";
 import request, { type RequestCallback } from "request";
 import type { Params } from "../types/params.js";
+import { addUriCacheEntry, uriCacheEntryExists } from "../lib/UriCache.js";
 
 function getContinuations(set: Child[], author: string) {
 	// Recursively search through comments, looking for plausible continuations
@@ -52,7 +53,7 @@ function uriToId(uri: string) {
 }
 
 function get(params: Params, callback: () => void) {
-	if (params.uri_cache.cache.indexOf(params.chap.id) > -1) {
+	if (uriCacheEntryExists(params.chap.id)) {
 		console.log(`${chalk.green("Cached")} ${params.chap.id}`);
 		params.chap.dom = cheerio.load(
 			fs.readFileSync(`${import.meta.dir}/../cache/${params.chap.id}`, {
@@ -80,7 +81,6 @@ function get(params: Params, callback: () => void) {
 				}
 
 				console.log(`${chalk.yellow("Fetched")} ${params.chap.id}`);
-				params.uri_cache.cache.push(params.chap.id);
 
 				let json: RedditResponse;
 				try {
@@ -107,6 +107,7 @@ function get(params: Params, callback: () => void) {
 					params.chap.dom.html(),
 					{ encoding: "utf8" },
 				);
+				addUriCacheEntry(params.chap.id);
 
 				callback();
 			}

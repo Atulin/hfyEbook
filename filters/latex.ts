@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import type { Params } from "../types/params.js";
 import Cheerio = cheerio.Cheerio;
+import { unescapeHtml } from "../lib/Cleaners.js";
 import Root = cheerio.Root;
 import { join } from "node:path";
 
@@ -18,7 +19,7 @@ function l_esc(txt: string) {
 }
 
 function filter(p: Params, txt: string) {
-	return l_esc(p.unescape_html(txt).replace(/—/g, " -- ").replace(/–/g, "--"))
+	return l_esc(unescapeHtml(txt).replace(/—/g, " -- ").replace(/–/g, "--"))
 		.replace(/’/g, "'")
 		.replace(/\\([^%\$#_\{\}&])/gm, "{\\textbackslash}$1")
 		.replace(/\\$/g, "{\\textbackslash}")

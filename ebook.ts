@@ -2,11 +2,9 @@ import { join } from "node:path";
 import { parseArgs } from "node:util";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import { decode_crs, purge, unescape_html } from "./lib/Cleaners.js";
-import { FilterManager } from "./lib/FilterManager.js";
+import { getFilter } from "./lib/FilterManager.js";
 import { ensureDir } from "./lib/Helpers.js";
 import { selectSpec } from "./lib/SpecSelector.js";
-import { UriCache } from "./lib/UriCache.js";
 import type { Params } from "./types/params.js";
 import { type Contents, type InternalSpec, type Spec, SpecSchema } from "./types/spec.js";
 
@@ -31,8 +29,6 @@ const { values: args } = parseArgs({
 
 const selectedSpec = await selectSpec(args);
 
-const filter_mgr = FilterManager.new();
-
 function Finalize(params: Params) {
 	const spec = params.spec;
 
@@ -40,12 +36,14 @@ function Finalize(params: Params) {
 		// params.chap = null;
 
 		if (spec.output.constructor === String) {
-			filter_mgr.get(spec.output)(params, () => {});
+			const fn = getFilter(spec.output);
+			fn(params, () => {});
 		} else if (Array.isArray(spec.output)) {
 			const ops: ((params: Params, next: () => void) => void)[] = [];
 
-			for (let i = 0; i < spec.output.length; i++) {
-				ops.push(filter_mgr.get(spec.output[i]));
+			for (const filter of spec.output) {
+				const fn = getFilter(filter);
+				ops.push(fn);
 			}
 
 			Sequence(ops, params);
@@ -95,7 +93,6 @@ if (!success) {
 }
 
 const sched: { [key: string]: [((params: Params, next: () => void) => void)[], Params][] } = {};
-const uri_cache = UriCache.new();
 
 const spec = data as InternalSpec;
 spec.loaded = 0;
@@ -105,10 +102,6 @@ for (let i = 0; i < spec.contents.length; i++) {
 	const params: Params = {
 		spec: spec,
 		chap: chap,
-		unescape_html: unescape_html,
-		decode_crs: decode_crs,
-		purge: purge,
-		uri_cache: uri_cache,
 		cheerio_flags: { decodeEntities: false },
 	};
 
@@ -129,8 +122,9 @@ for (let i = 0; i < spec.contents.length; i++) {
 	const filter_type = Object.prototype.toString.call(spec.filters);
 
 	if (Array.isArray(spec.filters)) {
-		for (let fi = 0; fi < spec.filters.length; fi++) {
-			ops.push(filter_mgr.get(spec.filters[fi]));
+		for (const filter of spec.filters) {
+			const fn = getFilter(filter);
+			ops.push(fn);
 		}
 	} else if (filter_type === "[object Object]") {
 		if (typeof chap.filters !== "string") {
@@ -151,8 +145,9 @@ for (let i = 0; i < spec.contents.length; i++) {
 
 		const filters = f[chap.filters] ?? [];
 
-		for (let fi = 0; fi < filters.length; fi++) {
-			ops.push(filter_mgr.get(filters[fi]));
+		for (const filter of filters) {
+			const fn = getFilter(filter);
+			ops.push(fn);
 		}
 	} else {
 		console.log(`${ERROR_TAG}Unsupported filter chain type "${filter_type}".`);
