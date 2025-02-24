@@ -8,23 +8,23 @@ export const selectSpec = async (args: { spec: string }) => {
 		return args.spec;
 	}
 
-	const specs = [...new Glob(join(dirname(Bun.main), "specs/*.json")).scanSync()];
+	const specs = [...new Glob(join(dirname(Bun.main), "specs/[^_]*.json")).scanSync()];
 	const fuse = new Fuse(specs, {});
 
 	return await search({
 		message: "Select a spec",
-		source: async (input) => {
+		source: (input) => {
 			if (!input) {
 				return [];
 			}
 
 			const results = fuse.search(input).map((result) => basename(result.item));
-			return Promise.resolve(
-				results.map((spec) => ({
-					name: spec,
-					value: spec,
-				})),
-			);
+			return results.map((spec) => ({
+				name: spec,
+				value: spec,
+			}));
 		},
+	}).catch(() => {
+		process.exit(0);
 	});
 };

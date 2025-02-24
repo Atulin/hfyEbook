@@ -1,8 +1,8 @@
 import { dirname, join } from "node:path";
-import chalk from "chalk";
-import { filename } from "./Helpers.js";
 import { Glob } from "bun";
-import { FilterModuleSchema, type FilterFunction } from "../types/filter.js";
+import chalk from "chalk";
+import { type FilterFunction, FilterModuleSchema } from "../types/filter.js";
+import { filename } from "./Helpers.js";
 
 const ERROR_TAG = `${chalk.red("Error")}: `;
 

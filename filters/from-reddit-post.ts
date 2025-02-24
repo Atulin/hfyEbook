@@ -4,8 +4,8 @@ import chalk from "chalk";
 import * as cheerio from "cheerio";
 import { marked } from "marked";
 import request, { type RequestCallback } from "request";
-import type { Params } from "../types/params.js";
 import { addUriCacheEntry, uriCacheEntryExists } from "../lib/UriCache.js";
+import type { Params } from "../types/params.js";
 
 function getContinuations(set: Child[], author: string) {
 	// Recursively search through comments, looking for plausible continuations
