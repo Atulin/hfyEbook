@@ -3,10 +3,13 @@ import { parseArgs } from "node:util";
 import * as cheerio from "cheerio";
 import { getFilter } from "./lib/FilterManager.js";
 import { ensureDir } from "./lib/Helpers.js";
+import { log } from "./lib/Logger.js";
 import { selectSpec } from "./lib/SpecSelector.js";
 import type { Params } from "./types/params.js";
-import { type Contents, type InternalSpec, type Spec, SpecSchema } from "./types/spec.js";
-import { log } from "./lib/Logger.js";
+import ct from "chalk-template";
+
+import { type Contents, type InternalSpec, SpecSchema } from "./types/spec.js";
+import { Glob } from "bun";
 
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
 await ensureDir("cache");
@@ -20,10 +23,33 @@ const { values: args } = parseArgs({
 			short: "s",
 			default: "",
 		},
+		deets: {
+			type: "boolean",
+			short: "d",
+			default: false,
+		},
 	},
 	strict: true,
 	allowPositionals: true,
 });
+
+if (args.deets) {
+	for await (const file of new Glob("./specs/[^_]*.json").scan()) {
+		const s = await Bun.file(file).json();
+		const { data, success, error } = SpecSchema.safeParse(s);
+
+		if (!success) {
+			log.err(`Spec is invalid: ${error.message}`);
+			process.exit(1);
+		}
+
+		console.log(ct`{bold.blue Spec:}  ${data?.title}`);
+		console.log(ct`| {bold.cyan Author:} ${data?.creator}`);
+		console.log(ct`| {bold.cyan Chapters:} ${data?.contents.length}`);
+		console.log(ct`| {bold.cyan Filters:} ${data?.filters.length}`);
+	}
+	process.exit();
+}
 
 const selectedSpec = await selectSpec(args);
 
@@ -105,16 +131,6 @@ for (let i = 0; i < spec.contents.length; i++) {
 		chap: chap,
 		cheerio_flags: { decodeEntities: false },
 	};
-
-	if (typeof chap.title !== "string") {
-		log.err(`Each chapter must contain a "title" property (string).`);
-		process.exit(1);
-	}
-
-	if (typeof chap.src !== "string") {
-		log.err(`Each chapter must contain a "src" property (string).`);
-		process.exit(1);
-	}
 
 	params.chap.id = `${i}`;
 	params.chap.dom = cheerio.load("");

@@ -2,8 +2,8 @@ import { basename, dirname, join } from "node:path";
 import { search } from "@inquirer/prompts";
 import { Glob } from "bun";
 import Fuse from "fuse.js";
-import { filename } from "./Helpers.js";
 import { toHeaderCase } from "js-convert-case";
+import { filename } from "./Helpers.js";
 
 export const selectSpec = async (args: { spec: string }) => {
 	if (Bun.stringWidth(args.spec) > 0) {

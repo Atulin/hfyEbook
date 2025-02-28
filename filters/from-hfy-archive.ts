@@ -1,10 +1,10 @@
+import fs from "node:fs";
 import chalk from "chalk";
 import cheerio from "cheerio";
 import request, { type RequestCallback } from "request";
-import type { Params } from "../types/params.js";
-import type { FilterModule } from "../types/filter.js";
-import fs from "node:fs";
 import { uriCacheEntryExists } from "../lib/UriCache.js";
+import type { FilterModule } from "../types/filter.js";
+import type { Params } from "../types/params.js";
 
 function uriToId(uri: string) {
 	const tokens = uri.split("/");

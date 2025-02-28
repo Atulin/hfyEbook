@@ -3,8 +3,8 @@ import chalk from "chalk";
 import cheerio from "cheerio";
 import request from "request";
 import { addUriCacheEntry, uriCacheEntryExists } from "../lib/UriCache.js";
-import type { Params } from "../types/params.js";
 import type { FilterModule } from "../types/filter.js";
+import type { Params } from "../types/params.js";
 
 function uriToId(uri: string) {
 	return decodeURI(uri.replace(/http:\/\/|www\.|[\?=&#%]/g, "").replace(/[\.\/]/g, "_"));

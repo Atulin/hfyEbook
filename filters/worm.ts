@@ -1,6 +1,6 @@
 import Root = cheerio.Root;
-import type { Params } from "../types/params.js";
 import type { FilterModule } from "../types/filter.js";
+import type { Params } from "../types/params.js";
 
 function filterText($: Root, e) {
 	if (e.type === "tag") {

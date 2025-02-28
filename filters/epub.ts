@@ -2,9 +2,9 @@ import fs from "node:fs";
 import { join } from "node:path";
 import dedent from "dedent";
 import uuid from "node-uuid";
+import type { FilterModule } from "../types/filter.js";
 import type { Params } from "../types/params.js";
 import type { InternalContents, InternalSpec } from "../types/spec.js";
-import type { FilterModule } from "../types/filter.js";
 
 // NOTES:
 // FBReader does not support text strikethrough (tags: s, del, strike)

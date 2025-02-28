@@ -1,6 +1,6 @@
 import { dirname, join } from "node:path";
 import { Glob } from "bun";
-import { FilterFunctionSchema, type FilterFunction, type FilterModule } from "../types/filter.js";
+import { type FilterFunction, FilterFunctionSchema, type FilterModule } from "../types/filter.js";
 import { filename } from "./Helpers.js";
 import { log } from "./Logger.js";
 

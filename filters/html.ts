@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { join } from "node:path";
-import type { Params } from "../types/params.js";
 import type { FilterModule } from "../types/filter.js";
+import type { Params } from "../types/params.js";
 
 const output = Bun.env.OUTPUT ?? "output";
 
