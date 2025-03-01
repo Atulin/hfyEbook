@@ -12,28 +12,27 @@ export default {
 			let pa: Cheerio | null = null;
 			let len = 2500;
 
-			if (params.chap["no-preamble-treshold"] !== undefined) {
-				len = params.chap["no-preamble-treshold"];
-			} else if (params.spec["no-preamble-treshold"] !== undefined) {
-				len = params.spec["no-preamble-treshold"];
+			if (params.chap["no-preamble-threshold"] !== undefined) {
+				len = params.chap["no-preamble-threshold"];
+			} else if (params.spec["no-preamble-threshold"] !== undefined) {
+				len = params.spec["no-preamble-threshold"];
 			}
 
-			hrs.each((_, e) => {
-				const c = $(e).prevAll();
+			for (const elem of hrs) {
+				const c = $(elem).prevAll();
 
 				if (c.text().length <= len) {
 					pa = c;
 				}
-			});
+			}
 
-			if (!pa) {
+			if (pa === null) {
 				next();
 				return;
 			}
 
 			const rem: Cheerio[] = [];
 
-			// BUG: What the fuck?
 			for (let i = 0; i < pa.length; i++) {
 				rem.push($(pa[i]));
 			}

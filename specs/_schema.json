@@ -71,7 +71,7 @@
 								"type": "string",
 								"description": "The source location of the material for the given chapter. This can be any value appropriate to the chosen input filter."
 							},
-							"no-preamble-treshold": {
+							"no-preamble-threshold": {
 								"type": "number"
 							},
 							"sw-part-index": {
@@ -83,7 +83,7 @@
 					},
 					"description": "Each element of the array is an object describing a chapter."
 				},
-				"no-preamble-treshold": {
+				"no-preamble-threshold": {
 					"type": "number"
 				},
 				"$schema": {
@@ -102,5 +102,5 @@
 			"additionalProperties": false
 		}
 	},
-	"$schema": "http://json-schema.org/draft-07/schema#"
+	"$schema": "https://json-schema.org/draft-07/schema#"
 }

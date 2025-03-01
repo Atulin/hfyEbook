@@ -23,7 +23,7 @@ export const ContentsSchema = z.object({
 			"The source location of the material for the given chapter. This can be any value appropriate to the chosen input filter.",
 		),
 
-	"no-preamble-treshold": z.number().optional(),
+	"no-preamble-threshold": z.number().optional(),
 
 	"sw-part-index": z.number().optional(),
 });
@@ -33,12 +33,14 @@ export type Contents = z.infer<typeof ContentsSchema>;
 export const InternalContentSchema = ContentsSchema.extend({
 	id: z.string(),
 	dom: z.custom<Root>(),
-	filters: FilterSchema,
+	filters: FilterSchema.or(z.string()),
 });
 
 export type InternalContents = z.infer<typeof InternalContentSchema>;
 
 export const SpecSchema = z.object({
+	$schema: z.string().default("_schema.json"),
+
 	patreon: z.string().optional().describe("Link to the author's Patreon."),
 
 	title: z.string().describe("Used as the book title and as the basis for the output filename."),
@@ -68,7 +70,7 @@ export const SpecSchema = z.object({
 		.array(ContentsSchema)
 		.describe("Each element of the array is an object describing a chapter."),
 
-	"no-preamble-treshold": z.number().optional(),
+	"no-preamble-threshold": z.number().optional(),
 });
 
 export type Spec = z.infer<typeof SpecSchema>;

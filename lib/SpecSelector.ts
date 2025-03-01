@@ -5,9 +5,9 @@ import Fuse from "fuse.js";
 import { toHeaderCase } from "js-convert-case";
 import { filename } from "./Helpers.js";
 
-export const selectSpec = async (args: { spec: string }) => {
-	if (Bun.stringWidth(args.spec) > 0) {
-		return args.spec;
+export const selectSpec = async (spec: string) => {
+	if (Bun.stringWidth(spec) > 0) {
+		return spec;
 	}
 
 	const specs = [...new Glob(join(dirname(Bun.main), "specs/[^_]*.json")).scanSync()];

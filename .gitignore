@@ -4,3 +4,4 @@ output/
 test-output/
 logs/
 *.log
+*.*~

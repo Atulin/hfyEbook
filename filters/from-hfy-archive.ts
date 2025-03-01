@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import chalk from "chalk";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import request, { type RequestCallback } from "request";
 import { uriCacheEntryExists } from "../lib/UriCache.js";
 import type { FilterModule } from "../types/filter.js";

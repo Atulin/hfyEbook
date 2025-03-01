@@ -1,4 +1,4 @@
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 import * as cheerio from "cheerio";
 import { getFilter } from "./lib/FilterManager.js";
@@ -10,6 +10,7 @@ import ct from "chalk-template";
 
 import { type Contents, type InternalSpec, SpecSchema } from "./types/spec.js";
 import { Glob } from "bun";
+import type { FilterFunction } from "./types/filter.js";
 
 // Ensure the 'cache' and 'output' directories exists. Create them if they do not.
 await ensureDir("cache");
@@ -51,7 +52,7 @@ if (args.deets) {
 	process.exit();
 }
 
-const selectedSpec = await selectSpec(args);
+const selectedSpec = await selectSpec(args.spec);
 
 function Finalize(params: Params) {
 	const spec = params.spec;
@@ -63,7 +64,7 @@ function Finalize(params: Params) {
 			const fn = getFilter(spec.output);
 			fn(params, () => {});
 		} else if (Array.isArray(spec.output)) {
-			const ops: ((params: Params, next: () => void) => void)[] = [];
+			const ops: FilterFunction[] = [];
 
 			for (const filter of spec.output) {
 				const fn = getFilter(filter);
@@ -81,11 +82,7 @@ function Finalize(params: Params) {
 
 type SequenceCb = ((chapters: Contents[] | null) => void) | null;
 
-function Sequence(
-	ops: ((params: Params, next: () => void) => void)[],
-	params: Params,
-	cb: SequenceCb = null,
-) {
+function Sequence(ops: FilterFunction[], params: Params, cb: SequenceCb = null) {
 	if (ops.length < 2) {
 		log.err("Cannot create a sequence of less than two operations.");
 		process.exit(1);
@@ -98,17 +95,17 @@ function Sequence(
 		}
 	})(params, cb);
 
-	for (let i = ops.length - 1; i >= 0; i--) {
+	for (const op of ops.toReversed()) {
 		last = ((cur, nxt) => () => {
-			cur?.(params, nxt);
-		})(ops[i], last);
+			cur(params, nxt);
+		})(op, last);
 	}
 
 	last();
 }
 
 // Load the spec. Start processing.
-const json = await Bun.file(join(import.meta.dir, "specs", selectedSpec)).json();
+const json = await Bun.file(join(dirname(Bun.main), "specs", selectedSpec)).json();
 
 const { data, success, error } = SpecSchema.safeParse(json);
 
@@ -117,7 +114,7 @@ if (!success) {
 	process.exit(1);
 }
 
-const sched: { [key: string]: [((params: Params, next: () => void) => void)[], Params][] } = {};
+const schedule: { [key: string]: { functions: FilterFunction[]; params: Params }[] } = {};
 
 const spec = data as InternalSpec;
 spec.loaded = 0;
@@ -135,7 +132,7 @@ for (let i = 0; i < spec.contents.length; i++) {
 	params.chap.id = `${i}`;
 	params.chap.dom = cheerio.load("");
 
-	const ops: ((params: Params, next: () => void) => void)[] = [];
+	const ops: FilterFunction[] = [];
 	const filter_type = Object.prototype.toString.call(spec.filters);
 
 	if (Array.isArray(spec.filters)) {
@@ -167,29 +164,29 @@ for (let i = 0; i < spec.contents.length; i++) {
 		process.exit(1);
 	}
 
-	if (chap.src in sched) {
-		sched[chap.src].push([ops, params]);
+	if (chap.src in schedule) {
+		schedule[chap.src].push({ functions: ops, params });
 	} else {
-		sched[chap.src] = [[ops, params]];
+		schedule[chap.src] = [{ functions: ops, params }];
 	}
 }
 
-for (const src in sched) {
-	if (!Object.hasOwn(sched, src)) {
+for (const src in schedule) {
+	if (!Object.hasOwn(schedule, src)) {
 		continue;
 	}
 
-	const chapters = sched[src];
+	const chapters = schedule[src];
 
 	if (chapters.length === 1) {
-		Sequence(chapters[0][0], chapters[0][1]);
+		Sequence(chapters[0].functions, chapters[0].params);
 	} else {
 		Sequence(
-			chapters[0][0],
-			chapters[0][1],
+			chapters[0].functions,
+			chapters[0].params,
 			((chapters) => () => {
-				for (let ci = 1; ci < chapters.length; ci++) {
-					Sequence(chapters[ci][0], chapters[ci][1]);
+				for (const chapter of chapters.slice(1)) {
+					Sequence(chapter.functions, chapter.params);
 				}
 			})(chapters),
 		);

@@ -8,9 +8,9 @@
 	"main": "ebook.mts",
 	"dependencies": {
 		"@inquirer/prompts": "^7.3.2",
-		"chalk": "^5.3.0",
+		"chalk": "^5.4.1",
 		"chalk-template": "^1.1.0",
-		"cheerio": "^0.22.0",
+		"cheerio": "^1.0.0",
 		"dedent": "^1.5.3",
 		"es-toolkit": "^1.32.0",
 		"fuse.js": "^7.1.0",
@@ -26,10 +26,10 @@
 		"schema": "bun build-schema.ts"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.8.3",
-		"@types/bun": "^1.1.6",
+		"@biomejs/biome": "^1.9.4",
+		"@types/bun": "^1.2.4",
 		"@types/cheerio": "^0.22.35",
-		"@types/node": "^22.13.5",
+		"@types/node": "^22.13.7",
 		"@types/node-uuid": "^0.0.32",
 		"@types/request": "^2.48.12",
 		"zod-to-json-schema": "^3.24.3"

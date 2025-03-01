@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import chalk from "chalk";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import { marked } from "marked";
 import type { FilterModule } from "../types/filter.js";
 import type { Params } from "../types/params.js";

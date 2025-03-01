@@ -4,6 +4,7 @@ import Cheerio = cheerio.Cheerio;
 import { unescapeHtml } from "../lib/Cleaners.js";
 import Root = cheerio.Root;
 import { join } from "node:path";
+import { log } from "../lib/Logger.js";
 import type { FilterModule } from "../types/filter.js";
 
 const output = Bun.env.OUTPUT ?? "output";
@@ -29,10 +30,10 @@ function filter(p: Params, txt: string) {
 		.replace(/…/g, "{\\ldots}");
 }
 
-function tolatex(p: Params, $: Root, e: Cheerio) {
+function toLatex(p: Params, $: Root, e: Cheerio) {
 	let latex = "";
 
-	e.contents().each((_, el) => {
+	for (const el of e.contents()) {
 		const elem = $(el);
 		let l = "";
 
@@ -42,15 +43,15 @@ function tolatex(p: Params, $: Root, e: Cheerio) {
 			l += filter(p, el.data ?? "");
 		} else if (el.type === "tag") {
 			if (el.name === "em") {
-				l += `\\textit{${tolatex(p, $, elem)}}`;
+				l += `\\textit{${toLatex(p, $, elem)}}`;
 			} else if (el.name === "strong") {
-				l += `\\textbf{${tolatex(p, $, elem)}}`;
+				l += `\\textbf{${toLatex(p, $, elem)}}`;
 			} else if (el.name === "pre" || el.name === "code") {
-				l += `\\monosp{${tolatex(p, $, elem).replace(/\n/g, "\\\\*")}}`;
+				l += `\\monosp{${toLatex(p, $, elem).replace(/\n/g, "\\\\*")}}`;
 			} else if (el.name === "a") {
-				l += `\\href{${l_esc(el.attribs.href)}}{${tolatex(p, $, elem)}}`;
+				l += `\\href{${l_esc(el.attribs.href)}}{${toLatex(p, $, elem)}}`;
 			} else if (el.name === "p") {
-				const t = tolatex(p, $, elem);
+				const t = toLatex(p, $, elem);
 
 				if (elem.attr("class") === "center") {
 					if (t === "⁂") {
@@ -62,29 +63,29 @@ function tolatex(p: Params, $: Root, e: Cheerio) {
 					l += t.replace(/\n\n?/g, "\n") + (t.indexOf("\\star") > -1 ? "" : "\n");
 				}
 			} else if (el.name === "blockquote") {
-				l += `\\begin{displayquote}\n${tolatex(p, $, elem)}\n\\end{displayquote}`;
+				l += `\\begin{displayquote}\n${toLatex(p, $, elem)}\n\\end{displayquote}`;
 			} else if (el.name === "span") {
-				l += tolatex(p, $, elem);
+				l += toLatex(p, $, elem);
 			} else if (el.name === "li") {
-				l += `\\item ${tolatex(p, $, elem)}`;
+				l += `\\item ${toLatex(p, $, elem)}`;
 			} else if (el.name === "ul") {
-				l += `\\begin{itemize}${tolatex(p, $, elem)}\n\\end{itemize}`;
+				l += `\\begin{itemize}${toLatex(p, $, elem)}\n\\end{itemize}`;
 			} else if (el.name === "ol") {
-				l += `\\begin{enumerate}${tolatex(p, $, elem)}\n\\end{enumerate}`;
+				l += `\\begin{enumerate}${toLatex(p, $, elem)}\n\\end{enumerate}`;
 			} else if (el.name === "br") {
 				l += "\\\\*\n";
 			} else if (el.name === "s" || el.name === "del" || el.name === "strike") {
-				l += `\\sout{${tolatex(p, $, elem)}}`;
+				l += `\\sout{${toLatex(p, $, elem)}}`;
 			} else if (el.name === "sup") {
-				l += `\\textsuperscript{${tolatex(p, $, elem)}}`;
+				l += `\\textsuperscript{${toLatex(p, $, elem)}}`;
 			} else {
-				console.log(`LaTeX: Unhandled tag: ${el.name}`);
-				l += tolatex(p, $, elem);
+				log.dbg(`LaTeX: Unhandled tag: ${el.name}`);
+				l += toLatex(p, $, elem);
 			}
 		}
 
 		latex += el.type !== "tag" || el.name !== "p" ? l.replace(/\n\n?/g, "\n") : l;
-	});
+	}
 
 	return latex;
 }
@@ -203,7 +204,7 @@ export default {
 				latex += `\\vspace{-2em}\\textsc{By ${l_esc(chap.byline)}}\\vspace{1em}\\\\*\n`;
 			}
 
-			latex += tolatex(params, chap.dom, chap.dom.root());
+			latex += toLatex(params, chap.dom, chap.dom.root());
 		}
 
 		latex += "\\end{document}";
